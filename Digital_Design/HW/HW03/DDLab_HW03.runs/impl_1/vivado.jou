@@ -1,0 +1,12 @@
+#-----------------------------------------------------------
+# Vivado v2017.3 (64-bit)
+# SW Build 2018833 on Wed Oct  4 19:58:07 MDT 2017
+# IP Build 2016188 on Wed Oct  4 21:52:56 MDT 2017
+# Start of session at: Fri Mar 26 22:06:48 2021
+# Process ID: 3412
+# Current directory: /home/ubuntu2004/workspace/CCU/Digital_Design/HW/HW03/DDLab_HW03.runs/impl_1
+# Command line: vivado -log add.vdi -applog -product Vivado -messageDb vivado.pb -mode batch -source add.tcl -notrace
+# Log file: /home/ubuntu2004/workspace/CCU/Digital_Design/HW/HW03/DDLab_HW03.runs/impl_1/add.vdi
+# Journal file: /home/ubuntu2004/workspace/CCU/Digital_Design/HW/HW03/DDLab_HW03.runs/impl_1/vivado.jou
+#-----------------------------------------------------------
+source add.tcl -notrace
