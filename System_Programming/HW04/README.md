@@ -497,7 +497,7 @@ ltrace -c ./fileperf input.txt output.txt 20971520  0.20s user 0.08s system 102%
 
 ### 結論
 
-從上述測試結果來看，C API Library call 在不同的 buffer 設定裡被呼叫的次數皆相同，但是所花的時間大不相同，尤其從 IONBF 到 IOLBF 就有顯著差異了。這些我們可以從 C API Library call 呼叫了幾次 System call 來看，在 IONBF 之下，R/W 次數高達 1.8M 次，從 htop 可以得知單核心時常處於滿載狀態，而 iotop 顯示一直有 IO，但是磁碟使用率很低：相比之下，IOFBF 的 iotop 顯示在 buffer 滿的時候會有一次較為大幅的 IO，CPU 得以不用一直處理 system call，chipset 也不用一直處理零碎的磁碟 IO
+從上述測試結果來看，C API Library call 在不同的 buffer 設定裡被呼叫的次數皆相同，但是所花的時間大不相同，尤其從 IONBF 到 IOLBF 就有顯著差異了。這些我們可以從 C API Library call 呼叫了幾次 System call 來看，在 IONBF 之下，R/W 次數高達 1.8M 次，從 htop 可以得知單核心時常處於滿載狀態，相比之下，IOFBF 的 iotop 顯示在 buffer 滿的時候會有一次 IO，CPU 得以不用一直處理 system call，chipset 也不用一直處理零碎的磁碟 IO
 
 
 
