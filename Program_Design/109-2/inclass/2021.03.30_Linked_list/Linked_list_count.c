@@ -44,6 +44,7 @@ LCntNode *LInsert_front(LCntNode *L, char *key) {
     LCntNode *ptr;
     ptr = (LCntNode *)malloc(sizeof(LCntNode *));  // you malloc a space here.
     ptr->key = strdup(key);  // you malloc a space here.
+    ptr->cnt = 1;
     ptr->next = L;
     // L = ptr;
     return ptr;
@@ -53,6 +54,7 @@ LCntNode *LInsert_tail(LCntNode *L, char *key) {
     LCntNode *ptr, *ptr_origin;
     ptr = (LCntNode *)malloc(sizeof(LCntNode *));  // you malloc a space here.
     ptr->key = strdup(key);  // you malloc a space here.
+    ptr->cnt = 1;
     ptr_origin = ptr;
 
     if (L == NULL) {

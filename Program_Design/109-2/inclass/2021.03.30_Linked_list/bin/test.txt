@@ -1,7 +1,0 @@
-apple
-banana
-apple
-banana
-cookie
-orange
-orange
