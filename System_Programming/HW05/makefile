@@ -9,7 +9,6 @@ all: ${EXE}
 %:	%.c
 	mkdir -p ./bin
 	${CC} ${CFLAGS} $@.c -o ./bin/$@
-	sudo chown root ./bin/$@
 	sudo chmod +s ./bin/$@
 
 clean:

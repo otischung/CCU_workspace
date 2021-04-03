@@ -43,7 +43,9 @@ int main(int argc, char **argv) {
         exit(1);
     }
 
-    setuid(0);
+    int euid = geteuid();
+    setuid(euid);
+    // setuid(0);
     initFileType();
 
     long totalsize;
@@ -99,7 +101,10 @@ int readSize(char *pathname) {
     // 在這裡用lstat和stat都可以，因為pathname傳進來的只會是normal file，不會是「捷徑」（softlink）
     
     // printf("readSize: %s\n", pathname);
-    stat(pathname, &buf);
+    if (stat(pathname, &buf) != 0) {
+        perror(pathname);
+        return 0;
+    }
     // if (errno != 0) {
     //     perror(pathname);
     //     return 0;
@@ -128,6 +133,11 @@ long myCountDir(char *path) {
     
     // 打開該目錄
     DIR *dirp = opendir(path);
+    if (dirp == NULL) {
+        perror(path);
+        return 0;
+    }
+
     // 讀取該目錄的第一個「物件」
     struct dirent *ent = readdir(dirp);
     // if (errno != 0) {
@@ -143,17 +153,18 @@ long myCountDir(char *path) {
     */
     while (ent != NULL) {
         //『這個目錄』及『上一層目錄』跳過不處理
-        if ( !strcmp(ent->d_name, "." ) || !strcmp(ent->d_name, ".." ) ) {
+        // I've modified the /etc/fstab to auto mount many disks to /mnt directory. Thus, I skip /mnt.
+        if ( !strcmp(ent->d_name, "." ) || !strcmp(ent->d_name, ".." ) || strstr(ent->d_name, "mnt" ) ) {
             ent = readdir(dirp);
             continue;
         }
 
         /******* "/run/user/1000/doc" is a pseudo file, root can't cd into it but owner can. *******/
-        if ( strstr(pathname, "/run/user/1000/") ) {
-            perror(pathname);
-            ent = readdir(dirp);
-            continue;
-        }
+        // if ( strstr(pathname, "/run/user/1000/") ) {
+        //     perror(pathname);
+        //     ent = readdir(dirp);
+        //     continue;
+        // }
 
         // 設定有這種檔案型別
         filetype[ent->d_type] = true;
