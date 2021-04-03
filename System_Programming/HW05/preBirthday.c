@@ -44,13 +44,15 @@ int main(int argc, char **argv) {
     }
 
     int euid = geteuid();
-    setuid(euid);
-    // setuid(0);
+    // setuid(euid);
+    setuid(0);
+    setvbuf(stdout, NULL, _IOFBF, 1 << 25);  // 32MB
     initFileType();
 
     long totalsize;
 
-    printf("授課老師 (羅習五) 的生日是: 1990/04/10\n");
+    // This is not important in my perspective, but this is the requirement of this HW.
+    printf("授課老師 (羅習五) 的生日是: 1990/04/10\n");  // Alright then... Ahh... Got it. 
     totalsize = myCountDir(argv[1]);
     printf("總共大小: %ld bytes\n", totalsize);
     printf("檔案種類: ");
@@ -93,7 +95,7 @@ void initFileType() {
 
 // 回傳某個檔案的大小
 int readSize(char *pathname) {
-    // errno = 0;
+    errno = 0;
     struct stat buf;
     // On success, zero is returned.  On error, -1 is returned, and errno is set appropriately.
     // https://blog.xuite.net/chowler/mainblog/5194764-assert%28%29+%E7%94%A8%E6%B3%95
@@ -105,13 +107,12 @@ int readSize(char *pathname) {
         perror(pathname);
         return 0;
     }
-    // if (errno != 0) {
-    //     perror(pathname);
-    //     return 0;
-    // }
+    if (errno != 0) {
+        perror(pathname);
+        return 0;
+    }
     // assert(stat(pathname, &buf) == 0);
     return buf.st_size;
-
 }
 
 // 使用遞迴計算某個目錄中的所有正規檔案的大小，並統計到底有多少種檔案型別
@@ -127,7 +128,7 @@ int readSize(char *pathname) {
        read, write, and execute permissions, respectively.
 */
 long myCountDir(char *path) {
-    // errno = 0;
+    errno = 0;
     long size = 0;
     char pathname[PATH_MAX] = "";  // define PATH_MAX 4096 in limits.h
     
@@ -140,10 +141,11 @@ long myCountDir(char *path) {
 
     // 讀取該目錄的第一個「物件」
     struct dirent *ent = readdir(dirp);
-    // if (errno != 0) {
-    //     perror(pathname);
-    //     return 0;
-    // }
+    if (errno != 0) {
+        perror(path);
+        errno = 0;
+        return 0;
+    }
     /*
         The  readdir() function returns a pointer to a di‐
         rent structure representing the **next directory 
@@ -152,10 +154,16 @@ long myCountDir(char *path) {
         tory stream or if an error occurred.
     */
     while (ent != NULL) {
+        // errno = 0;
         //『這個目錄』及『上一層目錄』跳過不處理
         // I've modified the /etc/fstab to auto mount many disks to /mnt directory. Thus, I skip /mnt.
         if ( !strcmp(ent->d_name, "." ) || !strcmp(ent->d_name, ".." ) || strstr(ent->d_name, "mnt" ) ) {
             ent = readdir(dirp);
+            if (errno != 0) {
+                perror(path);
+                errno = 0;
+                return 0;
+            }
             continue;
         }
 
@@ -185,6 +193,11 @@ long myCountDir(char *path) {
             ++fileCnt;
         }
         ent = readdir(dirp);
+        if (errno != 0) {
+            perror(path);
+            errno = 0;
+            return 0;
+        }
     }
     closedir(dirp);
     return size;
