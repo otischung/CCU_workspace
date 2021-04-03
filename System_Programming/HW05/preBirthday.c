@@ -21,6 +21,7 @@ DT_UNKNOWN  The file type could not be determined. 「U」
 #include <dirent.h>  // directory entry
 #include <string.h>
 #include <assert.h>
+#include <errno.h>
 // 底下這個.h定義了最長的path name長度
 #include <linux/limits.h>
 
@@ -90,6 +91,7 @@ void initFileType() {
 
 // 回傳某個檔案的大小
 int readSize(char *pathname) {
+    // errno = 0;
     struct stat buf;
     // On success, zero is returned.  On error, -1 is returned, and errno is set appropriately.
     // https://blog.xuite.net/chowler/mainblog/5194764-assert%28%29+%E7%94%A8%E6%B3%95
@@ -98,6 +100,10 @@ int readSize(char *pathname) {
     
     // printf("readSize: %s\n", pathname);
     stat(pathname, &buf);
+    // if (errno != 0) {
+    //     perror(pathname);
+    //     return 0;
+    // }
     // assert(stat(pathname, &buf) == 0);
     return buf.st_size;
 
@@ -116,11 +122,18 @@ int readSize(char *pathname) {
        read, write, and execute permissions, respectively.
 */
 long myCountDir(char *path) {
-    long size = 0; 
+    // errno = 0;
+    long size = 0;
+    char pathname[PATH_MAX] = "";  // define PATH_MAX 4096 in limits.h
+    
     // 打開該目錄
     DIR *dirp = opendir(path);
     // 讀取該目錄的第一個「物件」
     struct dirent *ent = readdir(dirp);
+    // if (errno != 0) {
+    //     perror(pathname);
+    //     return 0;
+    // }
     /*
         The  readdir() function returns a pointer to a di‐
         rent structure representing the **next directory 
@@ -134,16 +147,24 @@ long myCountDir(char *path) {
             ent = readdir(dirp);
             continue;
         }
+
+        /******* "/run/user/1000/doc" is a pseudo file, root can't cd into it but owner can. *******/
+        if ( strstr(pathname, "/run/user/1000/") ) {
+            perror(pathname);
+            ent = readdir(dirp);
+            continue;
+        }
+
         // 設定有這種檔案型別
         filetype[ent->d_type] = true;
         // 製造『路徑/名』
         // 如果使用者的輸入是「/」怎麼辦？，例如：「//home」會發生錯誤嗎？ Nope.
-        char pathname[PATH_MAX] = "";  // define PATH_MAX 4096 in limits.h
+        strcpy(pathname, "");
         strcat(pathname, path);
         strcat(pathname, "/");
         strcat(pathname, ent->d_name);
         // printf("%s\n", pathname);
-        //如果是目錄
+        // 如果是目錄
         if (ent->d_type == DT_DIR) {  // directory
             // printf("myCountDir: %s\n", pathname);
             // 遞迴呼叫
