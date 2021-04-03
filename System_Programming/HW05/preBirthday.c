@@ -97,7 +97,8 @@ int readSize(char *pathname) {
     // 在這裡用lstat和stat都可以，因為pathname傳進來的只會是normal file，不會是「捷徑」（softlink）
     
     // printf("readSize: %s\n", pathname);
-    assert(stat(pathname, &buf) == 0);
+    stat(pathname, &buf);
+    // assert(stat(pathname, &buf) == 0);
     return buf.st_size;
 
 }
@@ -136,7 +137,7 @@ long myCountDir(char *path) {
         // 設定有這種檔案型別
         filetype[ent->d_type] = true;
         // 製造『路徑/名』
-        // 如果使用者的輸入是「/」怎麼辦？，例如：「//home」會發生錯誤嗎？
+        // 如果使用者的輸入是「/」怎麼辦？，例如：「//home」會發生錯誤嗎？ Nope.
         char pathname[PATH_MAX] = "";  // define PATH_MAX 4096 in limits.h
         strcat(pathname, path);
         strcat(pathname, "/");
@@ -145,7 +146,7 @@ long myCountDir(char *path) {
         //如果是目錄
         if (ent->d_type == DT_DIR) {  // directory
             // printf("myCountDir: %s\n", pathname);
-            //遞迴呼叫
+            // 遞迴呼叫
             size += myCountDir(pathname);
         } else if (ent->d_type == DT_REG) {  // regular file
             size += readSize(pathname);
