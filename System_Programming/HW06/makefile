@@ -7,13 +7,13 @@ EXE = $(patsubst %.c, %, $(SRC))
 all: ${EXE}
 
 %:	%.c
-	# mkdir -p ./bin
-	${CC} ${CFLAGS} $@.c -o $@
-	ln -s $@ cp
-	ln -s $@ ls
-	ln -s $@ cat
-	ln -s $@ chown
+	mkdir -p ./bin
+	${CC} ${CFLAGS} $@.c -o ./bin/$@
+	ln -s ${PWD}/bin/$@ ./bin/cp
+	ln -s ${PWD}/bin/$@ ./bin/ls
+	ln -s ${PWD}/bin/$@ ./bin/cat
+	ln -s ${PWD}/bin/$@ ./bin/chown
 
 clean:
-	# rm -f ./bin/*
-	rm cp ls cat chown ${EXE}
+	rm -f ./bin/*
+	
