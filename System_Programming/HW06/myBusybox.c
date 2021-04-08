@@ -6,7 +6,14 @@
 int main(int argc, char **argv) {
     char exeBuf[4096];
     char *exename = basename(argv[0]);
-    printf("%s\n", exename);
-    system(exename);
+
+    strcpy(exeBuf, exename);
+    for (int i = 1; i < argc; ++i) {
+        strcat(exeBuf, " ");
+        strcat(exeBuf, argv[i]);
+    }
+
+    system(exeBuf);
+    
     return 0;
 }
