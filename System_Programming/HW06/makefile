@@ -1,6 +1,6 @@
 SHELL = /bin/bash
 CC = gcc
-CFLAGS = -g -pthread
+CFLAGS = -g -z lazy -pthread
 SRC = $(wildcard *.c)
 EXE = $(patsubst %.c, %, $(SRC))
 
@@ -16,4 +16,3 @@ all: ${EXE}
 
 clean:
 	rm -f ./bin/*
-	
