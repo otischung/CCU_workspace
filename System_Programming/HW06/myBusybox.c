@@ -16,7 +16,7 @@ int main(int argc, char **argv) {
         strcat(exeBuf, argv[i]);
         inputLen -= (strlen(argv[i]) + 1);
         if (inputLen < 0) {
-            fprintf(stderr, "Too long\nMax buffer len is %d", MaxBufLen);
+            fprintf(stderr, "Too long\nMax buffer len is %d\n", MaxBufLen);
             return 1;
         }
     }
