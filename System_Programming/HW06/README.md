@@ -8,7 +8,7 @@
 
 Operating System: Ubuntu 20.04.2 LTS
 
-**CPU: Intel Xeon Processor (Skylake, IBRS) @ 3.8GHz**
+**CPU: Intel Xeon Processor 32T (Skylake, IBRS)**
 
 RAM: 256GB
 
@@ -38,8 +38,11 @@ make -j menuconfig
 > It must be at least 19 lines by 80 columns.
 
 選擇 settings (press Enter)
+
 選擇 Build static binary (no shared libs) (press space or y)
+
 選擇 Additional CFLAGS (press enter)，輸入 -g -z lazy (press enter)
+
 儲存離開
 
 ```bash=
