@@ -43,9 +43,9 @@ int main(int argc, char **argv) {
         exit(1);
     }
 
-    int euid = geteuid();
-    // setuid(euid);
-    setuid(0);
+    uid_t euid = geteuid();  // unsigned int
+    setuid(euid);
+    // setuid(0);
     setvbuf(stdout, NULL, _IOFBF, 1 << 25);  // 32MB
     initFileType();
 
