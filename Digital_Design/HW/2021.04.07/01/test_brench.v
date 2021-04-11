@@ -1,16 +1,17 @@
 `timescale 1ns / 1ps
 module test_brench;
-    reg [2:0] in;
-    wire [3:0] out;
+    reg [3:0] in;
+    wire out;
     reg clk, rst;
 
-    A19760319 DUT(in, out);
+    prime DUT(in, out);
 
     initial begin
         clk <= 0;
         rst <= 0;
-        in <= 3'b000;
-        $monitor("input = %d, output = %d", in, out);
+        in <= 0;
+        $dumpfile("test.vcd");
+        $dumpvars;
     end
 
     always #5 clk = ~clk;
@@ -18,14 +19,13 @@ module test_brench;
 
     always @(posedge clk or negedge rst) begin
         if (rst) begin
-            $monitor("input = %d, output = %d", in, out);
-            if (in <= 7) begin
+            if (in <= 15) begin
+                $display("input = %d, output = %d", in, out);
                 in = in + 1;
-            end
-            if (in == 7) begin
-                $finish;
             end
         end
     end
+
+    always #160 $finish;
     
 endmodule
