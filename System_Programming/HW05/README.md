@@ -12,11 +12,9 @@ SSD: WD Black 256G WDS256G1X0C TLC (Seq. R: 2050MB/s, Seq. W: 700MB/s, Random R:
 
 ### 執行環境
 
-執行`sudo make`後，preBirthday 會在 bin 資料夾裡，`cd` 進去就可以執行了
+執行 make 後，preBirthday 會在 bin 資料夾裡，cd 進去就可以執行了
 
-因為是 sudo make，所以 不需要 `sudo chown root preBirthday`，在 sudo mode 下 make 一定是 root 權限，包含 bin 資料夾，故只需加入 set-uid 即可
-
-因為 bin 資料夾權限皆為 root，故刪除時也需使用 sudo，即 `sudo make clean`
+因為 script 裡有包含 sudo 指令，故執行 make 時會需要輸入 root 密碼
 
 in makefile
 
@@ -32,6 +30,7 @@ all: ${EXE}
 %:	%.c
 	mkdir -p ./bin
 	${CC} ${CFLAGS} $@.c -o ./bin/$@
+	sudo chown root ./bin/$@
 	sudo chmod +s ./bin/$@
 
 clean:
