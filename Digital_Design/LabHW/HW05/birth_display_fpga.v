@@ -9,22 +9,22 @@ module seven_seg_birthday(clk, rst, mod, CA, CB, CC, CD, CE, CF, CG,
 	reg clk_2hz;
 	reg [31:0] cnt_2hz;
 	reg [2:0] cnt;
-	reg [3:0] seg_data;
+	reg [6:0] seg_data;
 	reg [3:0] seg_number;
 	
-	assign {AN7,AN6,AN5,AN4,AN3,AN2,AN1,AN0} = 8'b1111_1110;
+	assign {AN7,AN6,AN5,AN4,AN3,AN2,AN1,AN0} = 8'b1111_1110;  // only display AN0.
 	assign {CG,CF,CE,CD,CC,CB,CA} = seg_data;
 	
 	////**YOUR_DESIGN**////
 	always @(*) begin
-		if (mod) begin
-			seg_data[3] <= (~cnt[2] & cnt[1]) | (~cnt[2] & cnt[0]);
-			seg_data[2] <= 0;
-			seg_data[1] <= (cnt[2] & ~cnt[1] & cnt[0]) | (cnt[2] & cnt[1] & ~cnt[0]);
-			seg_data[0] <= ~cnt[2] | cnt[0];
+		if (mod) begin  // SW[14] is on, display birthday.
+			seg_number[3] <= (~cnt[2] & cnt[1]) | (~cnt[2] & cnt[0]);
+			seg_number[2] <= 0;
+			seg_number[1] <= (cnt[2] & ~cnt[1] & cnt[0]) | (cnt[2] & cnt[1] & ~cnt[0]);
+			seg_number[0] <= ~cnt[2] | cnt[0];
 		end
-		else begin
-			seg_data <= cnt;
+		else begin  // SW[14] is off, display count.
+			seg_number <= cnt;
 		end
 	end
 	///////////////////////
@@ -49,10 +49,12 @@ module seven_seg_birthday(clk, rst, mod, CA, CB, CC, CD, CE, CF, CG,
 	
 	//**COUNTER**//
 	always @(posedge clk_2hz or negedge rst) begin
-		if(~rst)
+		if(~rst) begin  // SW[15] is off, count always be 0.
 			cnt <= 3'd0;
-		else
+		end
+		else begin  // SW[15] is on, count +1 while positive clock edge.
 			cnt <= cnt + 3'd1;
+		end
 	end
 	
 	//**BCD_to_7seg**//

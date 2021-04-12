@@ -7,4 +7,4 @@ run: all
 	gtkwave lab5.fsdb &
 
 clean:
-	rm test log.txt lab5.fsdb
+	rm test lab5.fsdb
