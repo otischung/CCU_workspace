@@ -1,0 +1,22 @@
+VCD info: dumpfile lab5.fsdb opened for output.
+                   5  cnt = 0, ,birth =  1, output = 0001
+              250005 cnt = 1, ,birth =  9, output = 1001
+              500005 cnt = 2, ,birth =  9, output = 1001
+              750005 cnt = 3, ,birth =  9, output = 1001
+             1000005 cnt = 4, ,birth =  0, output = 0000
+             1250005 cnt = 5, ,birth =  3, output = 0011
+             1500005 cnt = 6, ,birth =  2, output = 0010
+             1750005 cnt = 7, ,birth =  1, output = 0001
+             2000005 cnt = 0, ,birth =  1, output = 0001
+             2250005 cnt = 1, ,birth =  9, output = 1001
+             2500005 cnt = 2, ,birth =  9, output = 1001
+             2750005 cnt = 3, ,birth =  9, output = 1001
+             3000005 cnt = 4, ,birth =  0, output = 0000
+             3250005 cnt = 5, ,birth =  3, output = 0011
+             3500005 cnt = 6, ,birth =  2, output = 0010
+             3750005 cnt = 7, ,birth =  1, output = 0001
+             4000005 cnt = 0, ,birth =  1, output = 0001
+             4250005 cnt = 1, ,birth =  9, output = 1001
+             4500005 cnt = 2, ,birth =  9, output = 1001
+             4750005 cnt = 3, ,birth =  9, output = 1001
+             5000005 cnt = 4, ,birth =  0, output = 0000
