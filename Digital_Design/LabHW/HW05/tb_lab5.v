@@ -48,7 +48,7 @@ module tb_lab5;
 		clk <= 0;
 		rst <= 0;
 		@(posedge clk) rst <= 1;
-		$display ($time, "  cnt = %d, ,birth = %d, output = %b", cnt, birth_num, seg_data);
+		$display ($time, " cnt = %d, ,birth = %d, output = %b", cnt, birth_num, seg_data);
 		#5000000 $finish; //模擬於160ns結束
 	end
 endmodule
