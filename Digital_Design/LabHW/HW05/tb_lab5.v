@@ -14,7 +14,7 @@ module tb_lab5;
 	
 	always #5 clk = ~clk;
 	
-	always@ (posedge clk or negedge rst) begin
+	always @(posedge clk or negedge rst) begin
 		if (~rst) begin
 			cnt_2hz <= 21'b0;
 			clk_2hz <= 1'b0;
@@ -31,15 +31,15 @@ module tb_lab5;
 		end
 	end
 	
-	always@ (posedge clk_2hz or negedge rst) begin
+	always @(posedge clk_2hz or negedge rst) begin
 		if (~rst)
 			cnt <= 3'b0;
 		else 
 			cnt <= cnt + 3'b1;
 	end
 
-	always @ (posedge clk) begin
-		#250000	$display ($time, " cnt = %d, ,birth = %d, output = %b", cnt, birth_num, seg_data); //5個單位時間後顯示敘述
+	always @(posedge clk) begin
+		#250000	$display($time, " cnt = %d, ,birth = %d, output = %b", cnt, birth_num, seg_data); //5個單位時間後顯示敘述
 	end	
 
 	initial begin	//僅執行一次
@@ -48,7 +48,7 @@ module tb_lab5;
 		clk <= 0;
 		rst <= 0;
 		@(posedge clk) rst <= 1;
-		$display ($time, " cnt = %d, ,birth = %d, output = %b", cnt, birth_num, seg_data);
+		$display($time, " cnt = %d, ,birth = %d, output = %b", cnt, birth_num, seg_data);
 		#5000000 $finish; //模擬於160ns結束
 	end
 endmodule
