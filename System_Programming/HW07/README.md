@@ -28,7 +28,7 @@ SSD: WD Black 256G WDS256G1X0C TLC (Seq. R: 2050MB/s, Seq. W: 700MB/s, Random R:
 
 ### D. touch c
 
-![touch_c](./img/04_touch_c.png)
+![touch_c](./img/04_touch_c_in_b.png)
 
 ### E. vim c
 
