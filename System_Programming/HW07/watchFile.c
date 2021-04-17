@@ -1,11 +1,8 @@
-#define _DEFAULT_SOURCE
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
-#include <stddef.h>
 #include <string.h>
 #include <unistd.h>
-#include <dirent.h>
 #include <time.h>
 #include <sys/types.h>
 #include <sys/stat.h>

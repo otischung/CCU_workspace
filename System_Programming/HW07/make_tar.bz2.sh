@@ -7,13 +7,14 @@ read -p "After finish, press enter." ispdf
 
 if [ -f "./HW07_408410120.pdf" ]; then
     mkdir HW07_408410120
-    cp -r makefile watchFile.c HW07_408410120.pdf ./HW07_408410120/.
+    cp -r makefile watchFile.c watchFile_using_inotify.c HW07_408410120.pdf ./HW07_408410120/.
     tar jcvf HW07_408410120.tar.bz2 HW07_408410120
     rm -r HW07_408410120
     rm HW07_408410120.md HW07_408410120.pdf
     echo "Success."
 else
     echo "HW07_408410120.pdf not found."
+    unset ispdf
     exit 1
 fi
 
