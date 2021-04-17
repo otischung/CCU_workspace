@@ -14,6 +14,7 @@ if [ -f "./HW07_408410120.pdf" ]; then
     echo "Success."
 else
     echo "HW07_408410120.pdf not found."
+    rm HW07_408410120.md
     unset ispdf
     exit 1
 fi
