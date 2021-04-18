@@ -1,0 +1,7 @@
+bin
+.vscode
+sortperf
+mergesort
+heapsort
+quicksort
+make_tar.bz2.sh
