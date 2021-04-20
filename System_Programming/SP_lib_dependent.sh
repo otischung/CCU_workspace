@@ -1,3 +1,5 @@
+# perf
+sudo apt-get install linux-tools-common
 # HW04
 # utrace: gcc -pg
 # ltrace: -z lazy
