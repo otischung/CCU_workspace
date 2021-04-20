@@ -75,10 +75,10 @@ int main(int argc, char **argv) {
     printf("%s used %ld microseconds.\n", method, diff);
     printf("%s used %.2lf microseconds.\n", method, (double)diff / 1000000.0);
 
-    for (int i = 0; i < ARRSIZE; ++i) {
-        printf("%s", arr[i]);
-    }
-    putchar('\n');
+    // for (int i = 0; i < ARRSIZE; ++i) {
+    //     printf("%s", arr[i]);
+    // }
+    // putchar('\n');
 
     for (int i = 0; i < ARRSIZE; ++i) {
         free(arr[i]);

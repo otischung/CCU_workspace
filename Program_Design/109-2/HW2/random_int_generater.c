@@ -40,6 +40,7 @@ int main(int argc, char **argv) {
 
     gettimeofday(&start, NULL);
     fp = fopen("./random_int.txt", "w+");
+    setvbuf(fp, NULL, _IOFBF, 1048576 * sizeof(int));
     for (i = 0; i < ARRSIZE; ++i) {
         fprintf(fp, "%d\n", arr[i]);
     }

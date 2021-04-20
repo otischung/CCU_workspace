@@ -58,9 +58,9 @@ int main(int argc, char **argv) {
 
     printf("%s used %ld microseconds.\n", method, end - start);
     printf("%s used %.2Lf seconds.\n", method, ((long double)(end - start)/1000000));
-    for (int i = 0; i < ARRSIZE; ++i) {
-        printf("%d\n", arr[i]);
-    }
+    // for (int i = 0; i < ARRSIZE; ++i) {
+    //     printf("%d\n", arr[i]);
+    // }
 
     free(arr);
     return 0;
