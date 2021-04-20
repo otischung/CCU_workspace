@@ -8,8 +8,8 @@
 #include <sys/stat.h>
 #include <sys/time.h>
 #include <sys/types.h>
-#define ARRSIZE 1024  // 2 ^ 10
-// #define ARRSIZE 16777216  // 2 ^ 24
+// #define ARRSIZE 1024  // 2 ^ 10
+#define ARRSIZE 16777216  // 2 ^ 24
 
 
 int main(int argc, char **argv) {
@@ -26,13 +26,13 @@ int main(int argc, char **argv) {
     gettimeofday(&start, NULL);
     arr = (char **)malloc(ARRSIZE * sizeof(char *));
     if (arr == NULL) {
-        perror("malloc failed");
+        perror("Malloc failed");
         return 1;
     }
     for (int i = 0; i < ARRSIZE; ++i) {
         arr[i] = (char *)malloc(128 * sizeof(char));
         if (arr[i] == NULL) {
-            perror("malloc failed");
+            perror("Malloc failed");
             return 1;
         }
     }
@@ -43,7 +43,7 @@ int main(int argc, char **argv) {
     gettimeofday(&start, NULL);
     for (i = 0; i < ARRSIZE; ++i) {
         lineLen = rand() % 125 + 2;
-        for (j = 0; j < lineLen - 1; ++j) {
+        for (j = 0; j < lineLen; ++j) {
             mode = rand() % 3;
             switch (mode) {
                 case 0:

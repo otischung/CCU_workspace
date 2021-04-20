@@ -4,6 +4,7 @@
 #include <string.h>
 #include <time.h>
 #include <libgen.h>
+// #define ARRSIZE 1024  // 2 ^ 10
 #define ARRSIZE 16777216  // 2 ^ 24
 
 static void mergesort(int *, int);
@@ -24,7 +25,10 @@ int main(int argc, char **argv) {
     srand(time(NULL));
     char *method;
     int *arr;
+    int tmp;
+    int i;
     clock_t start, end;
+    FILE *fp;
 
     method = basename(argv[0]);
     arr = (int *)malloc(ARRSIZE * sizeof(int));
@@ -32,8 +36,11 @@ int main(int argc, char **argv) {
         perror("malloc failed");
         return 1;
     }
-    for (int i = 0; i < ARRSIZE; ++i) {
-        arr[i] = rand();
+
+    i = 0;
+    fp = fopen("./random_int.txt", "r");
+    while (~fscanf(fp, "%d", &tmp)) {
+        arr[i++] = tmp;
     }
 
     start = clock();
@@ -51,9 +58,9 @@ int main(int argc, char **argv) {
 
     printf("%s used %ld microseconds.\n", method, end - start);
     printf("%s used %.2Lf seconds.\n", method, ((long double)(end - start)/1000000));
-    // for (int i = 0; i < ARRSIZE; ++i) {
-    //     printf("%d\n", arr[i]);
-    // }
+    for (int i = 0; i < ARRSIZE; ++i) {
+        printf("%d\n", arr[i]);
+    }
 
     free(arr);
     return 0;

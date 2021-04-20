@@ -5,8 +5,8 @@
 #include <time.h>
 #include <libgen.h>
 #include <sys/time.h>
-#define ARRSIZE 1024  // 2 ^ 10
-// #define ARRSIZE 16777216  // 2 ^ 24
+// #define ARRSIZE 1024  // 2 ^ 10
+#define ARRSIZE 16777216  // 2 ^ 24
 
 static void mergesort(char **, int);
 static void heapsort(char **, int);

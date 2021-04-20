@@ -8,33 +8,23 @@
 #include <sys/stat.h>
 #include <sys/time.h>
 #include <sys/types.h>
-#define ARRSIZE 1024  // 2 ^ 10
-// #define ARRSIZE 16777216  // 2 ^ 24
+// #define ARRSIZE 1024  // 2 ^ 10
+#define ARRSIZE 16777216  // 2 ^ 24
 
 
 int main(int argc, char **argv) {
     srand(time(NULL));
-    char *method;
-    char **arr;
+    FILE *fp;
+    int *arr;
     struct timeval start, end;
     time_t diff;
-    short mode; // 0: number, 1: A-Z, 2: a-z
-    int fd;
-    int lineLen;
     int i, j;
 
     gettimeofday(&start, NULL);
-    arr = (char **)malloc(ARRSIZE * sizeof(char *));
+    arr = (int *)malloc(ARRSIZE * sizeof(int));
     if (arr == NULL) {
-        perror("malloc failed");
+        perror("Malloc failed");
         return 1;
-    }
-    for (int i = 0; i < ARRSIZE; ++i) {
-        arr[i] = (char *)malloc(128 * sizeof(char));
-        if (arr[i] == NULL) {
-            perror("malloc failed");
-            return 1;
-        }
     }
     gettimeofday(&end, NULL);
     diff = 1000000 * (end.tv_sec - start.tv_sec) + end.tv_usec - start.tv_usec;
@@ -42,41 +32,21 @@ int main(int argc, char **argv) {
 
     gettimeofday(&start, NULL);
     for (i = 0; i < ARRSIZE; ++i) {
-        lineLen = rand() % 125 + 2;
-        for (j = 0; j < lineLen - 1; ++j) {
-            mode = rand() % 3;
-            switch (mode) {
-                case 0:
-                    arr[i][j] = rand() % 10 + '0';
-                    break;
-                case 1:
-                    arr[i][j] = rand() % 26 + 'A';
-                    break;
-                case 2:
-                    arr[i][j] = rand() % 26 + 'a';
-                    break;
-                default:
-                    break;
-            }
-        }
-        arr[i][j] = '\n';
+        arr[i] = rand();
     }
     gettimeofday(&end, NULL);
     diff = 1000000 * (end.tv_sec - start.tv_sec) + end.tv_usec - start.tv_usec;
     printf("Generate random string time: %ld us (equal %f sec)\n", diff, diff / 1000000.0);
 
     gettimeofday(&start, NULL);
-    fd = open("./random_int.txt", O_RDWR | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
+    fp = fopen("./random_int.txt", "w+");
     for (i = 0; i < ARRSIZE; ++i) {
-        write(fd, arr[i], strlen(arr[i]));
-        if (ARRSIZE % 1024 == 0) {
-            fsync(fd);
-        }
+        fprintf(fp, "%d\n", arr[i]);
     }
     gettimeofday(&end, NULL);
     diff = 1000000 * (end.tv_sec - start.tv_sec) + end.tv_usec - start.tv_usec;
     printf("Write to file time: %ld us (equal %f sec)\n", diff, diff / 1000000.0);
 
-    close(fd);
+    fclose(fp);
     return 0;
 }
