@@ -1,7 +1,15 @@
 bin
 .vscode
+random_string_generater
+random_int_generater
+random_string.txt
+random_int.txt
 sortperf
 mergesort
 heapsort
 quicksort
+sortperf_string
+mergesort_string
+heapsort_string
+quicksort_string
 make_tar.bz2.sh
