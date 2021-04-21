@@ -20,6 +20,7 @@ int main(int argc, char **argv) {
     time_t diff;
     short mode; // 0: number, 1: A-Z, 2: a-z
     int fd;
+    FILE *fp;
     int lineLen;
     int i, j;
 
@@ -66,12 +67,15 @@ int main(int argc, char **argv) {
     printf("Generate random string time: %ld us (equal %f sec)\n", diff, diff / 1000000.0);
 
     gettimeofday(&start, NULL);
-    fd = open("./random_string.txt", O_RDWR | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
+    // fd = open("./random_string.txt", O_RDWR | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
+    fp = fopen("./random_string.txt", "w+");
+    setvbuf(fp, NULL, _IOFBF, 1048576);
     for (i = 0; i < ARRSIZE; ++i) {
-        write(fd, arr[i], strlen(arr[i]));
-        if (ARRSIZE % 1024 == 0) {
-            fsync(fd);
-        }
+        // write(fd, arr[i], strlen(arr[i]));
+        // if (ARRSIZE % 1048576 == 0) {
+        //     fsync(fd);
+        // }
+        fprintf(fp, "%s", arr[i]);
     }
     gettimeofday(&end, NULL);
     diff = 1000000 * (end.tv_sec - start.tv_sec) + end.tv_usec - start.tv_usec;
