@@ -10,6 +10,10 @@ nand nand2(w1, ~in[2], in[1]);
 nand nand2(w2, in[2], in[0]);
 nand nand2(out, w1, w2);
 
+// nor nor2(w1, ~in[2], in[0]);
+// nor nor2(w2, in[2], in[1]);
+// nor nor2(out, w1, w2);
+
 // binary code
 // SOP form
 // assign out = (~in[2] & in[1]) | (in[2] & in[0]);
