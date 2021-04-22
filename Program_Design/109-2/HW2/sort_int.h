@@ -10,7 +10,7 @@ static void mergesort(int *, int);
 static void heapsort(int *, int);
 static void quicksort(int *, int);
 static int cmp(const void *, const void *);
-void swap(int *, int *);
+static void swap(int *, int *);
 static void merge_sort(int *, int, int);
 static void merge(int *, int, int, int);
 static void shiftdown(int *, int, int);
@@ -41,7 +41,7 @@ static int cmp(const void *_a, const void *_b) {
     return *a - *b;
 }
 
-void swap(int *a, int *b) {
+static void swap(int *a, int *b) {
     int temp = *a;
     *a = *b;
     *b = temp;
@@ -142,4 +142,5 @@ static void quick_sort(int *arr, int pivot, int right) {
         quick_sort(arr, q + 1, right);
     }
 }
+
 #endif

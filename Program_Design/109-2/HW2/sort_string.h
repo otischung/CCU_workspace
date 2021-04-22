@@ -5,22 +5,23 @@
 
 #ifndef __sort_string
 #define __sort_string
-void mergesort(char **, int);
-void heapsort(char **, int);
-void quicksort(char **, int);
-int cmp(const void *, const void *);
-void swap(char **, char **);
-void merge_sort(char **, int, int);
-void merge(char **, int, int, int);
-void shiftdown(char **, int, int);
-int partition(char **, int, int);
-void quick_sort(char **, int, int);
 
-void mergesort(char **arr, int size) {  // call this
+static void mergesort(char **, int);
+static void heapsort(char **, int);
+static void quicksort(char **, int);
+static int cmp(const void *, const void *);
+static void swap(char **, char **);
+static void merge_sort(char **, int, int);
+static void merge(char **, int, int, int);
+static void shiftdown(char **, int, int);
+static int partition(char **, int, int);
+static void quick_sort(char **, int, int);
+
+static void mergesort(char **arr, int size) {  // call this
     merge_sort(arr, 0, size - 1);
 }
 
-void heapsort(char **arr, int size) {  // call this
+static void heapsort(char **arr, int size) {  // call this
     for (int i = size; i >= 0; --i) {
         shiftdown(arr, i, size);
     }
@@ -30,23 +31,23 @@ void heapsort(char **arr, int size) {  // call this
     }
 }
 
-void quicksort(char **arr, int size) {  // call this
+static void quicksort(char **arr, int size) {  // call this
     quick_sort(arr, 0, ARRSIZE - 1);
 }
 
-int cmp(const void *_a, const void *_b) {
+static int cmp(const void *_a, const void *_b) {
     char **a = (char **)_a;
     char **b = (char **)_b;
     return strcmp(*a, *b);
 }
 
-void swap(char **a, char **b) {
+static void swap(char **a, char **b) {
     char *temp = *a;
     *a = *b;
     *b = temp;
 }
 
-void merge_sort(char **arr, int left, int right) {
+static void merge_sort(char **arr, int left, int right) {
     int mid = (left + right) / 2;
     if (left < right) {
         merge_sort(arr, left, mid);
@@ -55,7 +56,7 @@ void merge_sort(char **arr, int left, int right) {
     }
 }
 
-void merge(char **arr, int left, int mid, int right) {
+static void merge(char **arr, int left, int mid, int right) {
     int leftlen = mid - left + 1;
     int rightlen = right - mid;
     int i, j, k;
@@ -98,7 +99,7 @@ void merge(char **arr, int left, int mid, int right) {
     free(rightarr);
 }
 
-void shiftdown(char **arr, int node, int size) {
+static void shiftdown(char **arr, int node, int size) {
     int left = node * 2 + 1;
     int right = node * 2 + 2;
     int max = left;
@@ -118,27 +119,27 @@ void shiftdown(char **arr, int node, int size) {
     }
 }
 
-int partition(char **arr, int pivot, int right) {
+static int partition(char **arr, int pivot, int right) {
     int i = pivot + 1, j = right;
 
     do {                                // No matter i is equal to j or not, you have to scan i and j through whole Aay at least once.
-        while( strcmp(arr[pivot],  arr[i]) ){        // All of the elements from pivot+1 to i must less than pivot(pivot).
-            if(i == right)                  // If all of the elements except pivot(pivot) are less then pivot, then i must stop at the end of the Aay.
+        while ( strcmp(arr[pivot],  arr[i]) ){        // All of the elements from pivot+1 to i must less than pivot(pivot).
+            if (i == right)                  // If all of the elements except pivot(pivot) are less then pivot, then i must stop at the end of the Aay.
                 break;
             else
                 ++i;
         }
  
-        while( strcmp(arr[j], arr[pivot]) ){        // All of the elements from j to right must less than pivot(pivot).
-            if(j == pivot)                  // If all of the elements except pivot(pivot) are greater then pivot, then j must stop at the start of the Aay.
+        while ( strcmp(arr[j], arr[pivot]) ){        // All of the elements from j to right must less than pivot(pivot).
+            if (j == pivot)                  // If all of the elements except pivot(pivot) are greater then pivot, then j must stop at the start of the Aay.
                 break;
             else
                 --j;
         }
-        if(i < j){                      // If i >= j, then you have already done the partition.
+        if (i < j){                      // If i >= j, then you have already done the partition.
             swap(&arr[i], &arr[j]);
         }
-    } while(i < j);
+    } while (i < j);
 
     if (j != pivot){                        // Actually, when j==pivot, that is, swap the same item, it won't cause error.
         swap(&arr[pivot], &arr[j]);
@@ -147,11 +148,12 @@ int partition(char **arr, int pivot, int right) {
     return j;
 }
 
-void quick_sort(char **arr, int pivot, int right) {
-    if(pivot < right){
+static void quick_sort(char **arr, int pivot, int right) {
+    if (pivot < right){
         int q = partition(arr, pivot, right);
         quick_sort(arr, pivot, q - 1);
         quick_sort(arr, q + 1, right);
     }
 }
+
 #endif
