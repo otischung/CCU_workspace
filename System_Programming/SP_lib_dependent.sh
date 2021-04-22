@@ -1,3 +1,13 @@
+# HW02
+# 檢查記憶體相關問題
+sudo apt install -y valgrind
+# GUI 界面版本
+sudo apt install -y kcachegrind
+#perf
+sudo apt install -y linux-tools-common
+sudo apt install -y linux-tools-5.8.0-50-generic
+sudo apt install -y linux-cloud-tools-5.8.0-50-generic
+
 # perf
 sudo apt-get install linux-tools-common
 # HW04
