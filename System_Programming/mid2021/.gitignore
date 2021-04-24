@@ -1,0 +1,9 @@
+bin
+.vscode
+lazybox
+lazyshell
+ln
+stat
+chown
+.sudo_success
+test.txt
