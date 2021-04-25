@@ -69,7 +69,8 @@ int main(int argc, char **argv) {
     for (int i = 0; i < ARRSIZE; ++i) {
         free(arr[i]);
     }
-    free(arr);
+    
     fclose(fp);
+    free(arr);
     return 0;
 }

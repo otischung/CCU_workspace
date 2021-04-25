@@ -110,25 +110,25 @@ static int partition(int *arr, int pivot, int right) {
     int i = pivot + 1, j = right;
 
     do {                                // No matter i is equal to j or not, you have to scan i and j through whole Aay at least once.
-        while(arr[i] <= arr[pivot]){        // All of the elements from pivot+1 to i must less than pivot(pivot).
-            if(i == right)                  // If all of the elements except pivot(pivot) are less then pivot, then i must stop at the end of the Aay.
+        while (arr[i] <= arr[pivot]) {       // All of the elements from pivot+1 to i must less than pivot(pivot).
+            if (i == right)                  // If all of the elements except pivot(pivot) are less then pivot, then i must stop at the end of the Aay.
                 break;
             else
                 ++i;
         }
  
-        while(arr[j] >= arr[pivot]){        // All of the elements from j to right must less than pivot(pivot).
-            if(j == pivot)                  // If all of the elements except pivot(pivot) are greater then pivot, then j must stop at the start of the Aay.
+        while (arr[j] >= arr[pivot]) {       // All of the elements from j to right must less than pivot(pivot).
+            if (j == pivot)                  // If all of the elements except pivot(pivot) are greater then pivot, then j must stop at the start of the Aay.
                 break;
             else
                 --j;
         }
-        if(i < j){                      // If i >= j, then you have already done the partition.
+        if (i < j){                      // If i >= j, then you have already done the partition.
             swap(&arr[i], &arr[j]);
         }
-    } while(i < j);
+    } while (i < j);
 
-    if (j != pivot){                        // Actually, when j==pivot, that is, swap the same item, it won't cause error.
+    if (j != pivot) {                       // Actually, when j==pivot, that is, swap the same item, it won't cause error.
         swap(&arr[pivot], &arr[j]);
     }
 
@@ -136,7 +136,7 @@ static int partition(int *arr, int pivot, int right) {
 }
 
 static void quick_sort(int *arr, int pivot, int right) {
-    if(pivot < right){
+    if (pivot < right){
         int q = partition(arr, pivot, right);
         quick_sort(arr, pivot, q - 1);
         quick_sort(arr, q + 1, right);

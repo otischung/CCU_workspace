@@ -1,4 +1,6 @@
-**Programming Design Homework 02  資工2B 408410120 鍾博丞**
+
+
+**Programming Design Homework 01  資工2B 408410120 鍾博丞**
 
 -----------------------------------------
 
@@ -87,6 +89,8 @@ sys     0m0.503s
 
 欲刪除測試資料，可執行 `make clean_gen`
 
+
+
 ## B. 亂數資料生成方法
 
 int 亂數較為簡單，主要生成方法為
@@ -116,9 +120,53 @@ for (i = 0; i < ARRSIZE; ++i) {
 
 
 
+## C. 演算法實作及複雜度
+
+### 1. Merge Sort
+
+Merge sort 使用 recursive call 形成 call stack，達成 divide，而最後使用 merge 函數將兩區域排序，達成 conquer，merge 函數會 malloc 出左陣列和右陣列，抄完之後再依照大小回推到原本的陣列，完成之後 free 掉兩個陣列
+
+Time complexity: $O(n \cdot \rm lg \it n\rm)$
+
+Space complexity: $O(n)$ 
 
 
-## C. 測量結果
+
+### 2. Quick Sort
+
+這裡採用第一個元素當作 pivot 進行分堆，由於沒有使用中位數，故若遇到較為極端的例子，例如為一反序陣列，這時 quick sort 會非常慢
+
+如果是 worst case，會有 $n-1$ 次 recursive call，故需執行
+
+$$\sum_{i=0}^n (n-i) = n^2 - \frac{n(n+1)}{2}$$
+
+次操作
+
+Quick sort 為一種 inplace 的排序，故計算空間複雜度時，會以產生多少 call stack 作為參考，如果是 worst case，會有 $n-1$ 次 recursive call
+
+Average time complexity: $O(n \cdot \rm lg \it n \rm)$
+
+Worst time complexity: $O(n^2)$
+
+Average space complexity: $O(\rm lg \it n \rm)$
+
+Worst space complexity: $O(n)$
+
+
+
+### 3. Heap Sort
+
+首先對於每一個元素做 shift down，產生 Max heap，然後依序將第一個元素與最後一個元素對調，heap size - 1，然後對於第一個元素做 shift down，直到 heap size = 1 即完成排序
+
+Heap sort 為一種 inplace 的排序，故計算空間複雜度時，會以產生多少 call stack 作為參考，對於第一個元素做 shift down，使用的 call stack 會是整個 heap tree 的高度
+
+Time complexity: $O(n \cdot \rm lg \it n \rm)$
+
+Space complexity: $O(\rm lg \it n \rm)$ 
+
+
+
+## D. 測量結果
 
 ### 1. 2^24 (約16.7M) 筆 *<font color=#FF0000>int</font>* 資料
 
@@ -128,19 +176,72 @@ for (i = 0; i < ARRSIZE; ++i) {
 
 #### (2) mergesort
 
-![mergesort](./img/2.mergesort.png)
+![mergesort](./img/02.mergesort.png)
 
 #### (3) quicksort
 
-![quicksort](./img/3.quicksort.png)
+![quicksort](./img/03.quicksort.png)
 
 #### (4) heapsort
 
-![heapsort](./img/4.heapsort.png)
+![heapsort](./img/04.heapsort.png)
 
 
 
+### 2. 2^24 (約16.7M) 筆 *<font color=#FF0000>string</font>* 資料
 
+每筆字長度介於 2 ~ 128 字元 (包含 \0)，其長度也是亂數產生
+
+#### (1) qsort
+
+![qsort_string](./img/05.qsort_string.png)
+
+#### (2) mergesort
+
+![mergesort_sring](./img/06.mergesort_sring.png)
+
+#### (3) quicksort
+
+![quicksort_sring](./img/07.quicksort_sring.png)
+
+#### (4) heapsort
+
+![heapsort_sring](./img/08.heapsort_sring.png)
+
+
+
+## E. 結論
+
+OS 在 malloc 記憶體時，較大的空間會以 mmap 的方式分配，較小空間會以 brk 的方式 malloc
+
+```c
+void *mmap(void *addr, size_t length, int prot, int flags, int fd, off_t offset);
+int brk(void *addr);
+```
+
+<font color=#FF0000>**mmap**</font>()  creates  a  new  mapping  in the virtual address space of the calling process.  The starting address for the new mapping is  specified  in  <font color=#008000>**addr**</font>.  The <font color=#008000>**length**</font> argument specifies the length of the mapping (which must be greater than 0). 
+
+If <font color=#008000>**addr**</font> is NULL, then the kernel chooses the  (page-aligned)  address at  which  to create the mapping; this is the most portable method of creating a new mapping.  If <font color=#008000>**addr**</font> is not NULL, then the  kernel  takes it as a hint about where to place the mapping; on Linux, the kernel will pick a nearby page boundary (but always above or equal to the value specified by <font color=#008000>**/proc/sys/vm/mmap_min_addr**)</font> and attempt to create the mapping there.  If another mapping already exists there, the kernel picks a new address that may or may not depend on the hint. The address of the new mapping is returned as the result of the call. 
+
+The contents of a file mapping (as opposed to an  anonymous  mapping; see <font color=#FF0000>**MAP_ANONYMOUS**</font> below), are initialized using <font color=#008000>**length**</font> bytes starting at offset <font color=#008000>**offset**</font> in the file (or other object)  referred  to by the file descriptor  <font color=#008000>**fd**</font>.  <font color=#008000>**offset**</font> must be a multiple of the page size as returned by <font color=#008000>**sysconf(_SC_PAGE_SIZE)**</font>. 
+
+After the <font color=#FF0000>**mmap**</font>() call has returned, the file descriptor, <font color=#008000>**fd**</font>,  can be closed immediately without invalidating the mapping.
+
+尤其從字串的排序就可以知道，要分配 arr$[2^{24}] [128]$，需要 mmap 9 次 ($2^{24}$) 而 brk 17876 次 (對於每個 char * 分配 128 bytes)，而排序最花時間的當然就是 read 元素進行比較
+
+
+
+隨便取一種排序方法，`sudo perf top -e branch-instructions` 就可以證明這一切了
+
+![perf](./img/09_branch-instructions.png)
+
+
+
+## F. Reference
+
+4102150_02 System Programming, instouctor: Prof. Si-Wu Lo
+
+Linux manual page
 
 ---------------------------------------------------------
 

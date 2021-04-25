@@ -5,6 +5,7 @@
 #include <string.h>
 #include <time.h>
 #include <libgen.h>
+#include <sys/time.h>
 
 int main(int argc, char **argv) {
     // setvbuf(stdout, NULL, _IOFBF, ARRSIZE);
@@ -13,7 +14,8 @@ int main(int argc, char **argv) {
     int *arr;
     int tmp;
     int i;
-    clock_t start, end;
+    struct timeval start, end;
+    time_t diff;
     FILE *fp;
 
     method = basename(argv[0]);
@@ -29,7 +31,7 @@ int main(int argc, char **argv) {
         arr[i++] = tmp;
     }
 
-    start = clock();
+    gettimeofday(&start, NULL);
     if (!strcmp(method, "mergesort")) {
         mergesort(arr, ARRSIZE);
     } else if (!strcmp(method, "heapsort")) {
@@ -40,14 +42,16 @@ int main(int argc, char **argv) {
         method = "qsort";
         qsort(arr, ARRSIZE, sizeof(arr[0]), cmp);
     }
-    end = clock();
+    gettimeofday(&end, NULL);
+    diff = 1000000 * (end.tv_sec - start.tv_sec) + end.tv_usec - start.tv_usec;
 
-    printf("%s used %ld microseconds.\n", method, end - start);
-    printf("%s used %.2Lf seconds.\n", method, ((long double)(end - start)/1000000));
+    printf("%s used %ld microseconds.\n", method, diff);
+    printf("%s used %.2Lf seconds.\n", method, (long double)diff / 1000000);
     // for (int i = 0; i < ARRSIZE; ++i) {
     //     printf("%d\n", arr[i]);
     // }
-
+    
+    fclose(fp);
     free(arr);
     return 0;
 }
