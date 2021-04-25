@@ -64,15 +64,17 @@ module testbench;
 
             // Bestcase test
             if (idx == 1) begin
-                in_a <= 
-                in_b <=       
-                cin  <= 
+                #20
+                in_a <= 0;
+                in_b <= 1;    
+                cin  <= 0;
             end 
             // Worstcase test
             else if (idx == 2) begin
-                in_a <= 
-                in_b <= 
-                cin  <= 
+                #20
+                in_a <= 16'b1010101010101011;
+                in_b <= 16'b0101010101010101;
+                cin  <= 1;
             end 
             //--- Write your design here---//
             

@@ -10,8 +10,7 @@ tb1: ./16bit_testbench.v
 
 tb2: ./16bit_testbench2.v
 	iverilog -o tb2 16bit_testbench2.v
-	vvp tb2 | cat > logtb2.txt
-	cat logtb2.txt
+	vvp tb2
 	gtkwave 16bit_RCA2.fsdb &
 
 clean:
