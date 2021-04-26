@@ -66,11 +66,10 @@ int main(int argc, char **argv) {
     // }
     // putchar('\n');
 
+    fclose(fp);
     for (int i = 0; i < ARRSIZE; ++i) {
         free(arr[i]);
     }
-    
-    fclose(fp);
     free(arr);
     return 0;
 }

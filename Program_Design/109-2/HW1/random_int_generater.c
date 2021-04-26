@@ -49,5 +49,6 @@ int main(int argc, char **argv) {
     printf("Write to file time: %ld us (equal %f sec)\n", diff, diff / 1000000.0);
 
     fclose(fp);
+    free(arr);
     return 0;
 }
