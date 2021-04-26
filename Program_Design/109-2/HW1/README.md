@@ -245,7 +245,7 @@ After the <font color=#FF0000>**mmap**</font>() call has returned, the file desc
 
 ## F. Reference
 
-4102150_02 System Programming, instouctor: Prof. Si-Wu Lo
+4102150_02 System Programming, instructor: Prof. Shi-Wu Lo
 
 Linux manual page
 
