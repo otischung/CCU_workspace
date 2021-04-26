@@ -8,13 +8,13 @@ tb16: ./16bit_testbench.v
 	cat log16bit.txt
 	gtkwave 16bit_CLA.fsdb &
 
-tb32: ./32bit_testbench.v
+tb32: ./16bit_testbench.v ./32bit_testbench.v
 	iverilog -o tb32bit 32bit_testbench.v
 	vvp tb32bit | cat > log32bit.txt
 	cat log32bit.txt
 	gtkwave 32bit_CLA.fsdb &
 
-tb64: ./64bit_testbench.v
+tb64: ./16bit_testbench.v ./64bit_testbench.v
 	iverilog -o tb64bit 64bit_testbench.v
 	vvp tb64bit | cat > log64bit.txt
 	cat log64bit.txt
