@@ -1,8 +1,11 @@
 bin
 .vscode
-tb1
-tb2
-logtb1.txt
-logtb2.txt
-16bit_RCA.fsdb
-16bit_RCA2.fsdb
+tb16bit
+tb32bit
+tb64bit
+log16bit.txt
+log32bit.txt
+log64bit.txt
+16bit_CLA.fsdb
+32bit_CLA.fsdb
+64bit_CLA.fsdb

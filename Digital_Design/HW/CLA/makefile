@@ -1,10 +1,24 @@
 SHELL=/bin/bash
 
-all: ./16bit_testbench.v
-	iverilog -o tb1 16bit_testbench.v
-	vvp tb1 | cat > log.txt
-	cat log.txt
+all: tb16 tb32 tb64
+
+tb16: ./16bit_testbench.v
+	iverilog -o tb16bit 16bit_testbench.v
+	vvp tb16bit | cat > log16bit.txt
+	cat log16bit.txt
 	gtkwave 16bit_CLA.fsdb &
 
+tb32: ./32bit_testbench.v
+	iverilog -o tb32bit 32bit_testbench.v
+	vvp tb32bit | cat > log32bit.txt
+	cat log32bit.txt
+	gtkwave 32bit_CLA.fsdb &
+
+tb64: ./64bit_testbench.v
+	iverilog -o tb64bit 64bit_testbench.v
+	vvp tb64bit | cat > log64bit.txt
+	cat log64bit.txt
+	gtkwave 64bit_CLA.fsdb &
+
 clean:
-	rm tb1 log.txt 16bit_CLA.fsdb
+	rm tb16bit tb32bit tb64bit log16bit.txt log32bit.txt log64bit.txt 16bit_CLA.fsdb 32bit_CLA.fsdb 64bit_CLA.fsdb
