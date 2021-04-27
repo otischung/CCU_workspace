@@ -18,7 +18,7 @@ module testbench;
     wire cout;
     wire gp, gg;
 
-    CLA_32bit Import_CLA(in_a, in_b, cin, sum, cout, gp, gg);
+    CLA_32bit Import_CLA(in_a, in_b, cin, sum, gp, gg, cout);
 
 	initial begin
         in_a <= 0;
@@ -68,30 +68,30 @@ module testbench;
                 if ({cout, sum} == correct_ans) begin
                     correct_ct <= correct_ct + 1;
                     
-                    $display ("////////////Test %d////////////", idx);
+                    $display ("////////////////////////Test %d////////////////////////", idx);
                     $display ("//  Q :%d + %d + %d = ? //",in_a, in_b, cin);
-                    $display ("///////////////////////////////");
+                    $display ("///////////////////////////////////////////////////////");
                     $display ("//  Your answer              //");                    
                     $display ("//  Cout = %d Sum = %d     //", cout, sum);
-                    $display ("///////////////////////////////");
+                    $display ("///////////////////////////////////////////////////////");
                     $display ("//  Correct answer           //");
                     $display ("//  Cout = %d Sum = %d     //", correct_ans[32], correct_ans[31:0]);           
-                    $display ("///////////////////////////////");
-                    $display ("//        SUCCESSFUL !       //");
-                    $display ("///////////////////////////////\n\n");
+                    $display ("///////////////////////////////////////////////////////");
+                    $display ("//                   SUCCESSFUL !                  //");
+                    $display ("///////////////////////////////////////////////////////\n\n");
                 end 
                 else begin
-                    $display ("////////////Test %d////////////", idx);
+                    $display ("////////////////////////Test %d////////////////////////", idx);
                     $display ("//  Q :%d + %d + %d = ? //", in_a, in_b, cin);
-                    $display ("///////////////////////////////");
-                    $display ("//  Your answer              //");                    
+                    $display ("///////////////////////////////////////////////////////");
+                    $display ("//  Your answer                                      //");                    
                     $display ("//  Cout = %d Sum = %d     //", cout, sum);
-                    $display ("///////////////////////////////");
-                    $display ("//  Correct answer           //");
+                    $display ("///////////////////////////////////////////////////////");
+                    $display ("//  Correct answer                                   //");
                     $display ("//  Cout = %d Sum = %d     //", correct_ans[32], correct_ans[31:0]);           
-                    $display ("///////////////////////////////");
-                    $display ("//           FAIL !          //");
-                    $display ("///////////////////////////////\n\n");
+                    $display ("///////////////////////////////////////////////////////");
+                    $display ("//                      FAIL !                     //");
+                    $display ("///////////////////////////////////////////////////////\n\n");
                 end 
             end            
         end

@@ -1,15 +1,15 @@
 `timescale 1ns / 1ps
 `include "PG_converter.v"
 
-module CLA_4bit(a, b, cin, s, p, g, cout);
+module CLA_4bit(a, b, cin, s, GP, GG, cout);
 	
 	input [3:0] a, b;
 	input cin;
-	output [3:0] s, p, g;
-	output cout;
+	output [3:0] s;
+	output GP, GG, cout;
 
 	wire [2:0] c;
-    wire GP, GG;
+    wire [3:0] p, g;
 
     FAPG T1(a[0], b[0], cin, p[0], g[0]);
     assign c[0] = g[0] | (p[0] & cin);
