@@ -1,0 +1,11 @@
+bin
+.vscode
+tb16bit
+tb32bit
+tb64bit
+log16bit.txt
+log32bit.txt
+log64bit.txt
+16bit_CLA.fsdb
+32bit_CLA.fsdb
+64bit_CLA.fsdb
