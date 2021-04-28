@@ -18,8 +18,9 @@ module testbench;
     wire cout;
     wire gp, gg;
 
-    CLA_64bit Import_CLA(in_a, in_b, cin, sum, gp, gg, cout);
-
+    CLA_64bit Import_CLA(in_a, in_b, cin, sum, gp, gg);
+    PG2C T1(cin, gp, gg, cout);
+    
 	initial begin
         in_a <= 0;
         in_b <= 0;  
