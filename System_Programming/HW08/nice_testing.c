@@ -1,8 +1,10 @@
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
 #include <ctype.h>
 #include <unistd.h>
+#include <sched.h>
 #include <signal.h>
 #include <sys/stat.h>
 #include <sys/types.h>
@@ -14,12 +16,16 @@ void alarmHandler(int);
 int main(int argc, char **argv) {
     int nice_v;
     pid_t childPid;
+    cpu_set_t set;
 
-    if (argc != 2 && !isdigit(argv[1][0]) && argv[1][0] != '-') {
+    if (argc != 2 && !isdigit(argv[1][0]) && argv[1][0] != '-' && argv[1][0] != '+') {
         fprintf(stderr, "format error\n");
         fprintf(stderr, "./nice_testing <int level>\n");
         return 1;
     }
+
+    CPU_ZERO(&set);
+    CPU_SET(0, &set);
     
     nice_v = atoi(argv[1]);
     childPid = fork();
@@ -29,6 +35,9 @@ int main(int argc, char **argv) {
     }
     if (childPid > 0) {
         nice(nice_v);
+        printf("Child: ");
+    } else {
+        printf("Parent: ");
     }
 
     signal(SIGALRM, alarmHandler);
