@@ -11,19 +11,27 @@ test: stest stest2 ltest ltest2
 
 stest: all
 	time strace -c ./bin/nice_testing 5
+	@echo -e '\n'
 	time strace -c taskset 0x1 ./bin/nice_testing 5
+	@echo -e '\n'
 
 stest2: all
 	time strace -c ./bin/nice_testing -5
+	@echo -e '\n'
 	time strace -c taskset 0x1 ./bin/nice_testing -5
+	@echo -e '\n'
 
 ltest: all
 	time ltrace -c ./bin/nice_testing 5
+	@echo -e '\n'
 	time ltrace -c taskset 0x1 ./bin/nice_testing 5
+	@echo -e '\n'
 
 ltest2: all
 	time ltrace -c ./bin/nice_testing -5
+	@echo -e '\n'
 	time ltrace -c taskset 0x1 ./bin/nice_testing -5
+	@echo -e '\n'
 
 clean:
 	rm -f ./bin/*

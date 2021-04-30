@@ -26,6 +26,8 @@ int main(int argc, char **argv) {
 
     CPU_ZERO(&set);
     CPU_SET(0, &set);
+    // long num_cpus = sysconf(_SC_NPROCESSORS_ONLN);
+    // printf("%ld\n", num_cpus);
     
     nice_v = atoi(argv[1]);
     childPid = fork();
