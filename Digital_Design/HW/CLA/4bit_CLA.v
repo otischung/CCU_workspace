@@ -11,8 +11,8 @@ module CLA_4bit(a, b, cin, s, GP, GG);
 	wire [2:0] c;
     wire [3:0] p, g;
 
-    FA4bitToPG T1(a, b, p, g);
-    PG4bitToGroup G1(p, g, cin, GP, GG, c);
+    FA4bitToPG T1(.a, .b, .p, .g);
+    PG4bitToGroup G1(.p, .g, .cin, .P(GP), .G(GG), .c);
     assign s = a ^ b ^ {c, cin};
 	
 endmodule
