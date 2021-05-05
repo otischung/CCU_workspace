@@ -1,11 +1,11 @@
 #pragma once
 #include "randint_gen.h"
 
-void binary_search(int arrsize, int query);
-int cmp(const void *a, const void *b);
-void bs(int *arr, int arrsize, int key);
+static void binary_search(int arrsize, int query);
+static int cmp(const void *a, const void *b);
+static bool bs(int *arr, int arrsize, int key);
 
-void binary_search(int arrsize, int query) {
+static void binary_search(int arrsize, int query) {
     FILE *fp;
     int *arr;
     int num;
@@ -25,10 +25,12 @@ void binary_search(int arrsize, int query) {
         perror("fopen error");
         exit(1);
     }
+    printf("bs:\n");
 
     // cpu_threads = sysconf(_SC_NPROCESSORS_CONF);
     // task = (pthread_t *)calloc(cpu_threads, sizeof(pthread_t));
-
+    
+    clock_gettime(CLOCK_MONOTONIC, &start);
     arr = (int *)calloc(arrsize, sizeof(int));
     for (int i = 0; i < arrsize; ++i) {
         // pthread_create(&task[0], NULL, file2array, (void *)data);
@@ -40,40 +42,56 @@ void binary_search(int arrsize, int query) {
         //     array_linear_search(arrsize, query, true);
         // }
     }
+    clock_gettime(CLOCK_MONOTONIC, &end);
+    diff = (end.tv_sec - start.tv_sec) * 1000000000 + end.tv_nsec - start.tv_nsec;
+    printf("Time for insert key to array: %ldns = %.2lfs\n", diff, (double)diff / 1000000000.0);
+
     clock_gettime(CLOCK_MONOTONIC, &start);
     qsort(arr, arrsize, sizeof(arr[0]), cmp);
     clock_gettime(CLOCK_MONOTONIC, &end);
     diff = (end.tv_sec - start.tv_sec) * 1000000000 + end.tv_nsec - start.tv_nsec;
     printf("Time for qsort: %ldns = %.2lfs\n", diff, (double)diff / 1000000000.0);
 
+    num = 0;
     clock_gettime(CLOCK_MONOTONIC, &start);
     for (int i = 0; i < query; ++i) {
-        bs(arr, arrsize, rand());
+        if (bs(arr, arrsize, rand())) {
+            ++num;
+        }
     }
     clock_gettime(CLOCK_MONOTONIC, &end);
     diff = (end.tv_sec - start.tv_sec) * 1000000000 + end.tv_nsec - start.tv_nsec;
-    printf("Time for binary search to array: %ldns = %.2lfs\n", diff, (double)diff / 1000000000.0);
+    printf("We have found %d keys.\n", num);
+    printf("Time for binary search to array: %ldns = %.2lfs\n\n", diff, (double)diff / 1000000000.0);
 
     free(arr);
     fclose(fp);
 }
 
-int cmp(const void *a, const void *b) {
+static int cmp(const void *a, const void *b) {
     return *(int *)a - *(int *)b;
 }
 
-void bs(int *arr, int arrsize, int key) {
+static bool bs(int *arr, int arrsize, int key) {
     int left, mid, right;
     left = 0;
     right = arrsize - 1;
 
-    while (left < right) {
+    while (left < right - 1) {
         mid = left + (right - left) / 2;
-        if (arr[mid] == key) return;
+        if (arr[mid] == key) {
+            printf("%d is found.\n", key);
+            return true;
+        }
         else if (arr[mid] < key) {
-            left = mid + 1;
+            left = mid;
         } else {
-            right = mid - 1;
+            right = mid;
         }
     }
+    if (arr[right] == key) {
+        printf("%d is found.\n", key);
+        return true;
+    }
+    return false;
 }

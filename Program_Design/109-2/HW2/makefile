@@ -9,7 +9,5 @@ all: ${TARGET}
 	${CC} ${CFLAGS} $@.c -o $@ -lpthread
 
 clean:
-	rm ${TARGET}
+	rm ${TARGET} *.txt
 
-clean_rand:
-	rm *.txt

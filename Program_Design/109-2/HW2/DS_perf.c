@@ -37,7 +37,7 @@ int main(int argc, char **argv) {
 
     //----------------------------------------------------------------------------//
 
-    // randint_gen(insert);
+    randint_gen(insert);
     for (int i = 5; i < argc; ++i) {
              if (!strcmp("-bst",  argv[i])) binary_search_tree(insert, query);
         else if (!strcmp("-bs",   argv[i])) binary_search(insert, query);

@@ -25,6 +25,7 @@ static void randint_gen(int size) {
         fprintf(stderr, "Given size is too large.\n");
         return;
     }
+    srand(time(NULL));
     repeat = (bool *)calloc(RAND_MAX, sizeof(bool));
     if (repeat == NULL) {
         perror("malloc failed");
