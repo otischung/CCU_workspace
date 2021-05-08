@@ -6,6 +6,12 @@ typedef struct BSTNODE {
     struct BSTNODE *left, *right;
 } BSTNode;
 
+// typedef struct DELETESTACK {
+//     BSTNode **stack;
+//     unsigned long long arrsize;
+//     unsigned long long member;
+// } DS;
+
 static void binary_search_tree(int arrsize, int query);
 static BSTNode *BSTNewNode(int key);
 static BSTNode *BST_insert(BSTNode *head, int key);
@@ -13,6 +19,12 @@ static bool BST_find(BSTNode *head, int key);
 static void BST_print_inorder(BSTNode *ptr);
 static void BST_print_preorder(BSTNode *ptr);
 static void BST_print_postorder(BSTNode *ptr);
+static void BST_free(BSTNode *head);
+
+// static void DS_init(DS *stack);
+// static void push(DS *stack, BSTNode *node);
+// static BSTNode *pop(DS *stack);
+static void BST_free(BSTNode *ptr);
 
 ///////////////////////////////////////////////////////////////////////////
 static void binary_search_tree(int arrsize, int query) {
@@ -71,6 +83,7 @@ static void binary_search_tree(int arrsize, int query) {
     printf("We have found %d keys.\n", num);
     printf("Time for search in BST: %ldns = %.2lfs\n\n", diff, (double)diff / 1000000000.0);
 
+    BST_free(head);
     fclose(fp);
 }
 ///////////////////////////////////////////////////////////////////////////
@@ -141,4 +154,32 @@ static void BST_print_postorder(BSTNode *ptr) {
     if (ptr->left != NULL) BST_print_postorder(ptr->left);
     if (ptr->right != NULL) BST_print_postorder(ptr->right);
     printf("%d\n", ptr->key);
+}
+
+// static void DS_init(DS *stack) {
+//     stack->arrsize = 4;
+//     stack->member = 0;
+//     stack->stack = (BSTNode **)calloc(stack->arrsize, sizeof(BSTNode *));
+// }
+
+// static void push(DS *stack, BSTNode *node){
+//     if (stack->member == stack->arrsize) {
+//         stack->arrsize <<= 1;
+//         stack->stack = realloc(stack->stack, sizeof(BSTNode *) * stack->arrsize);
+//     }
+//     stack->stack[stack->member++] = node;
+// }
+
+// static BSTNode *pop(DS *stack) {
+//     if (stack->member == stack->arrsize >> 1) {
+//         stack->arrsize >>= 1;
+//         stack->stack = realloc(stack->stack, sizeof(BSTNode *) * stack->arrsize);
+//     }
+//     return stack->stack[--stack->member];
+// }
+
+static void BST_free(BSTNode *ptr) {
+    if (ptr->left != NULL) BST_free(ptr->left);
+    if (ptr->right != NULL) BST_free(ptr->right);
+    free(ptr);
 }

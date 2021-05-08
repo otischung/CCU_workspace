@@ -2,3 +2,4 @@ bin
 .vscode
 randint.txt
 DS_perf
+callgrind.out.*

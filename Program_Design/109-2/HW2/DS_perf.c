@@ -1,3 +1,4 @@
+// You can check memery leak with `valgrind --leak-check=full --show-leak-kinds=all --verbose <executable file>`
 #include "randint_gen.h"
 #include "bst.h"
 #include "bs.h"

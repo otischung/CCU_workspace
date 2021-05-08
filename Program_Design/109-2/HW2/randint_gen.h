@@ -23,7 +23,7 @@ static void randint_gen(int size) {
 
     if (size > RAND_MAX) {
         fprintf(stderr, "Given size is too large.\n");
-        return;
+        exit(1);
     }
     srand(time(NULL));
     repeat = (bool *)calloc(RAND_MAX, sizeof(bool));
@@ -51,7 +51,7 @@ static void randint_gen(int size) {
     clock_gettime(CLOCK_MONOTONIC, &end);
 
     diff = (end.tv_sec - start.tv_sec) * 1000000000 + end.tv_nsec - start.tv_nsec;
-    printf("Time for random integer generator: %ldns = %.2lfs\n", diff, (double)diff / 1000000000.0);
+    printf("Time for random integer generator: %ldns = %.2lfs\n\n", diff, (double)diff / 1000000000.0);
 
     fclose(fp);
     free(repeat);

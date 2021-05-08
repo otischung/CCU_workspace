@@ -10,7 +10,9 @@ static void linked_list(int arrsize, int query);
 static LLNode *ll_insert(LLNode *head, int key);
 static bool ll_find(LLNode *head, int key);
 static void ll_print(LLNode *head);
+static void freell(LLNode *head);
 
+///////////////////////////////////////////////////////////////
 static void linked_list(int arrsize, int query) {
     FILE *fp;
     int num;
@@ -48,8 +50,10 @@ static void linked_list(int arrsize, int query) {
     printf("We have found %d keys.\n", num);
     printf("Time for search in linked list: %ldns = %.2lfs\n\n", diff, (double)diff / 1000000000.0);
 
+    freell(head);
     fclose(fp);
 }
+///////////////////////////////////////////////////////////////
 
 static LLNode *ll_insert(LLNode *head, int key) {
     LLNode *newLLNode = (LLNode *)malloc(sizeof(LLNode));
@@ -81,5 +85,15 @@ static void ll_print(LLNode *head) {
     while (traverse) {
         printf("%d\n", traverse->key);
         traverse = traverse->next;
+    }
+}
+
+static void freell(LLNode *head) {
+    LLNode *pre, *cur;
+    cur = head;
+    while (cur) {
+        pre = cur;
+        cur = cur->next;
+        free(pre);
     }
 }
