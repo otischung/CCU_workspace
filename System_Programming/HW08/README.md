@@ -54,6 +54,23 @@ sudo setcap CAP_CHOWN+ep <file>
 
 
 
+## 試用 setcap
+
+依序執行以下命令
+
+```bash
+cp /usr/bin/chown ./chown_super
+sudo setcap CAP_CHOWN+ep ./chown_super
+./chown_super YOUR_USER_NAME /bin/ls
+./chown_super root /bin/ls
+```
+
+結果如下
+
+![setcap_test](./img/07.setcap_test.png)
+
+確實在 setcap 之後不需要再額外 sudo
+
 ## nice
 
 現在的 CPU 和 OS 都支援多工處理，那麼，在 CPU scheduling 裡，會根據每個工作的優先執行序 (priority) 來判斷誰比較重要優先完成，在 Linux 系統中，每個 process 都會擁有一個所謂的『優先執行序 (priority)』的屬性，我們可以用 htop 來看，PRI 就是這支程式的 priority 值，NI 就是這個 process 的 nice 的偏移值，priority 的值越低，優先度越高
