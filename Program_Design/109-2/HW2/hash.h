@@ -82,7 +82,7 @@ static bool find(HN **arr, int arrsize, int key) {
     else {
         while (traverse) {
             if (traverse->key == key) {
-                printf("%d is found.\n", key);
+                // printf("%d is found.\n", key);
                 return true;
             }
             traverse = traverse->next;

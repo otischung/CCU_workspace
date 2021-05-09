@@ -80,7 +80,7 @@ static bool bs(int *arr, int arrsize, int key) {
     while (left < right - 1) {
         mid = left + (right - left) / 2;
         if (arr[mid] == key) {
-            printf("%d is found.\n", key);
+            // printf("%d is found.\n", key);
             return true;
         }
         else if (arr[mid] < key) {
@@ -90,7 +90,7 @@ static bool bs(int *arr, int arrsize, int key) {
         }
     }
     if (arr[right] == key) {
-        printf("%d is found.\n", key);
+        // printf("%d is found.\n", key);
         return true;
     }
     return false;

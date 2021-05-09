@@ -127,7 +127,7 @@ static BSTNode *BST_insert(BSTNode *head, int key) {
 static bool BST_find(BSTNode *head, int key) {
     BSTNode *traverse = head;
     if (traverse->key == key) {
-        printf("%d is found.\n", key);
+        // printf("%d is found.\n", key);
         return true;
     } else if (traverse->key >= key) {
         if (traverse->left != NULL) BST_find(traverse->left, key);

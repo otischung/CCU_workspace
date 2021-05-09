@@ -100,7 +100,7 @@ Time complexity: $O(1)$
 
 ## D. 測量結果
 
-### ./DS_perf -d 1e6 -q 1e4 -arr -ll -bs -bst -hash
+### ./DS_perf -d 1e6 -q 1e5 -arr -ll -bs -bst -hash
 
 #### (1) Linear Search
 
@@ -123,6 +123,17 @@ Time complexity: $O(1)$
 ![-hash](./img/06.hash.png)
 
 
+
+最後使用 valgrind 檢查一下 memory leak
+
+```bash
+valgrind --leak-check=full --show-leak-kinds=all --verbose ./DS_perf -d 1e6 -q 1 -arr -ll -bs -bst -hash
+```
+
+![valgrind](./img/07.valgrind.png)
+
+
+
 ## E. 結論
 
 
@@ -131,5 +142,5 @@ Time complexity: $O(1)$
 
 ## F. Reference
 
-Myself
+4102150_02 System Programming, instructor: Prof. Shi-Wu Lo
 

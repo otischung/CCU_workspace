@@ -64,7 +64,7 @@ static void array_linear_search(int arrsize, int query) {
 static bool linear_search(int *arr, int arrsize, int key) {
     for (int i = 0; i < arrsize; ++i) {
         if (arr[i] == key) {
-            printf("%d is found.\n", key);
+            // printf("%d is found.\n", key);
             return true;
         }
     }
