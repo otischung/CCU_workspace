@@ -30,7 +30,7 @@ module testbench;
         #10 rst = 1;
         #10 rst = 0;
 
-        for (idx = 0; idx < 2; idx = idx + 1) begin
+        for (idx = 1; idx < 3; idx = idx + 1) begin
             #500 rst = 1;
             #20  rst = 0;
         end
@@ -64,13 +64,13 @@ module testbench;
             //--- Write your design here---//
 
             // Bestcase test
-            if (idx == 1) begin
+            if (idx == 2) begin
                 in_a <= 0;
                 in_b <= 1;    
                 cin  <= 0;
             end 
             // Worstcase test
-            else if (idx == 2) begin
+            else if (idx == 3) begin
                 in_a <= 16'b1010101010101011;
                 in_b <= 16'b0101010101010101;
                 cin  <= 1;
