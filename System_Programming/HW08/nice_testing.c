@@ -45,7 +45,7 @@ int main(int argc, char **argv) {
         perror("fork error");
         return 1;
     }
-    if (childPid > 0) {
+    if (childPid == 0) {
         nice(nice_v);
         printf("Child: ");
     } else {
