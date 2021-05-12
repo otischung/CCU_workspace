@@ -48,8 +48,10 @@ Node *find(Node *head, char *key) {
 void llprint(Node *head) {
     Node *traverse = head;
     if (traverse == NULL) return;
+    printf("%s", traverse->key);
+    traverse = traverse->next;
     while (traverse) {
-        printf("%s\n", traverse->key);
+        printf("\n%s", traverse->key);
         traverse = traverse->next;
     }
 }

@@ -8,7 +8,6 @@ all: ${EXE}
 
 %:	%.c
 	mkdir -p bin
-	cp -f test.txt ./bin
 	${CC} ${CFLAGS} $@.c -o ./bin/$@
 
 clean:
