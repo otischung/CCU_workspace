@@ -7,6 +7,8 @@
 #include <unistd.h>
 #include <pwd.h>
 #include <grp.h>
+#include <shadow.h>
+#include <crypt.h>
 #include <assert.h>
 #include <sys/types.h>
 #include <sys/wait.h>
@@ -14,6 +16,7 @@
 char *ltrim(char *s);
 char *rtrim(char *s);
 char *trim(char *s);
+int CheckPassword(const char* user, const char* password);
 
 
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -21,8 +24,9 @@ int main(int argc, char **argv) {
     char username[1024];
     char buf[1024];
     char *namePtr;
+    char password[1024];
     struct passwd passwd_ent;
-    struct passed *result;
+    struct passwd *result;
     struct group *gr;
     // long ngroups_max;
     int nGroup = sysconf(_SC_NGROUPS_MAX);
@@ -40,7 +44,10 @@ int main(int argc, char **argv) {
 
         printf("user: ");
         namePtr = fgets(username, 1024, stdin);
-        printf("gets %s\n", namePtr);
+        if (username[strlen(username) - 1] == '\n') {
+            username[strlen(username) - 1] =  '\0';
+        }
+        // printf("gets %s\n", namePtr);
 
         namePtr = trim(namePtr);  // clear redundant white space.
 
@@ -71,6 +78,20 @@ int main(int argc, char **argv) {
         ret = getpwnam_r(namePtr, &passwd_ent, buf, 1024, &result);
         if (ret != 0) {
             perror("getpwnam failed");
+            continue;
+        }
+        if (result == NULL) {
+            printf("User '%s' doesn't exist\n", namePtr);
+            continue;
+        }
+
+        printf("password: ");
+        fgets(password, 1024, stdin);
+        if (password[strlen(password) - 1] == '\n') {
+            password[strlen(password) - 1] =  '\0';
+        }
+        if (CheckPassword(namePtr, password)) {
+            printf("Incorrect, please try again.\n");
             continue;
         }
 
@@ -186,4 +207,25 @@ char *rtrim(char *s) {
 
 char *trim(char *s) {
     return rtrim(ltrim(s));
+}
+
+int CheckPassword( const char* user, const char* password) {
+    struct passwd *passwdEntry = getpwnam(user);
+    if (!passwdEntry) {
+        return 1;
+    }
+
+    if (0 != strcmp(passwdEntry->pw_passwd, "x")) {
+        return strcmp(passwdEntry->pw_passwd, crypt(password, passwdEntry->pw_passwd));
+    } else {
+        // password is in shadow file
+        struct spwd *shadowEntry = getspnam(user);
+        if (!shadowEntry) {
+            printf( "Failed to read shadow entry for user '%s'\n", user);
+            return 1;
+        }
+
+        return strcmp(shadowEntry->sp_pwdp, crypt(password, shadowEntry->sp_pwdp));
+    }
+    // https://stackoverflow.com/questions/17499163/how-to-check-password-in-linux-by-using-c-or-shell
 }
