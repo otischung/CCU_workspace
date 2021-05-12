@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <ctype.h>
 #define MaxWordLen 1024
 
 char *ltrim(char *s) {
@@ -10,14 +11,13 @@ char *ltrim(char *s) {
 char *rtrim(char *s) {
     char *ptr = s;
     while (*ptr != '\n') ++ptr;
-    --ptr;
-    while (*--ptr == ' ');
-    *ptr++ = '\n';
-    *ptr = '\0';
+    while (isspace(*--ptr));
+    *++ptr = '\n';
+    *++ptr = '\0';
     return s;
 }
 
-void trim(char *s) {
+char *trim(char *s) {
     char output[MaxWordLen];
     char *ptr, *qtr;
 
@@ -41,15 +41,17 @@ void trim(char *s) {
     }
     *ptr++ = '\n';
     *ptr = '\0';
+    return s;
 }
 
 int main() {
     char input[MaxWordLen];
+    char *inputptr;
 
     while (fgets(input, MaxWordLen, stdin) != NULL) {
-        printf("%s", rtrim(ltrim(input)));
-        // trim(input);
-        // printf("%s", input);
+        inputptr = input;
+        inputptr = trim(inputptr);
+        printf("%s", inputptr);
     }
 
     return 0;
