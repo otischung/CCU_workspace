@@ -1,0 +1,4 @@
+abcde
+abcdcba
+apple
+ddddddd
