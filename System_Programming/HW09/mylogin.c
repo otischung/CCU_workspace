@@ -143,6 +143,7 @@ int main(int argc, char **argv) {
         *************************************************************************/
             ret = getgrouplist(namePtr, passwd_ent.pw_gid, groups, &nGroup);
 
+            printf("PID = %d\n", getpid());
             printf("getgrouplist = %d\n", ret);
             printf("User ID: %d\n", passwd_ent.pw_uid);
             printf("User name: %s\n", passwd_ent.pw_name);
