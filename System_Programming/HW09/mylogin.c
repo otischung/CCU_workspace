@@ -21,10 +21,11 @@ int CheckPassword(const char* user, const char* password);
 
 ///////////////////////////////////////////////////////////////////////////////////////
 int main(int argc, char **argv) {
-    char username[1024];
+    char username[1024] = "";
     char buf[1024];
     char *namePtr;
-    char password[1024];
+    char password[1024] = "";
+    char *passPtr;
     struct passwd passwd_ent;
     struct passwd *result;
     struct group *gr;
@@ -44,12 +45,17 @@ int main(int argc, char **argv) {
 
         printf("user: ");
         namePtr = fgets(username, 1024, stdin);
+        if (namePtr == NULL) break;
         if (username[strlen(username) - 1] == '\n') {
             username[strlen(username) - 1] =  '\0';
         }
         // printf("gets %s\n", namePtr);
 
         namePtr = trim(namePtr);  // clear redundant white space.
+        if (!strcmp(namePtr, "exit")) {
+            printf("exit\n");
+            break;
+        }
 
         /*************************************************************************
          * int getpwnam_r(const char *name, struct passwd *pwd,
@@ -86,11 +92,13 @@ int main(int argc, char **argv) {
         }
 
         printf("password: ");
-        fgets(password, 1024, stdin);
+        passPtr = fgets(password, 1024, stdin);
+        if (passPtr == NULL) break;
         if (password[strlen(password) - 1] == '\n') {
             password[strlen(password) - 1] =  '\0';
         }
-        if (CheckPassword(namePtr, password)) {
+        passPtr = trim(passPtr);
+        if (CheckPassword(namePtr, passPtr)) {
             printf("Incorrect, please try again.\n");
             continue;
         }
@@ -185,9 +193,7 @@ int main(int argc, char **argv) {
             // continue;
         }
     }
-
     
-
     return 0;
 }
 //////////////////////////////////////////////////////////////////////////////////////
