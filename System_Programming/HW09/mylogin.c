@@ -32,17 +32,29 @@ int main(int argc, char **argv) {
     // long ngroups_max;
     int nGroup = sysconf(_SC_NGROUPS_MAX);
     uid_t ruid, euid, suid;
-    pid_t pid;
+    pid_t pid, sid;
     int wstatus;
     gid_t gid;
     gid_t groups[nGroup];
     int ret;
     char *const bashargv[] = {"/usr/bin/bash", NULL};
 
-    while (true) {
-        // getresuid(&ruid, &euid, &suid);
-        // setreuid(euid, ruid);  // swap the ruid and the euid.
+    getresuid(&ruid, &euid, &suid);
+    printf("ruid: %d, euid: %d, suid: %d\n", ruid, euid, suid);
+    // setreuid(euid, ruid);  // swap the ruid and the euid.
+    // setuid(0);
+    // getresuid(&ruid, &euid, &suid);
+    // printf("ruid: %d, euid: %d, suid: %d\n", ruid, euid, suid);
 
+    sid = setsid();
+    if (sid == -1) {
+        perror("setsid failed");
+        exit(1);
+    } else {
+        printf("The session ID is %d\n", sid);
+    }
+
+    while (true) {
         printf("user: ");
         namePtr = fgets(username, 1024, stdin);
         if (namePtr == NULL) break;
