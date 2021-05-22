@@ -86,15 +86,38 @@ Time complexity: $O(\rm lg \it n \rm)$
 
 將產生的亂數以下列非線性函數做轉換，並開一個比資料量兩倍大的陣列，假設為 2N
 
-$hash(x) = (x - 2^{30})^2 \rm mod \  2 \it N$
+使用 FNV-1a Algorithm 實作
+
+```pseudocode
+hash = FNV_offset_basis
+for each octetOfData to be hashed
+    hash = hash xor octetOfData
+    hash = hash * FNV_prime
+return hash
+```
+
+Where the constants `FNV_offset_basis` and `FNV_prime` depend on the return hash size you want:
+
+```
+Hash Size  
+===========
+32-bit
+    prime: 2^24 + 2^8 + 0x93 = 16777619
+    offset: 2166136261
+64-bit
+    prime: 2^40 + 2^8 + 0xb3 = 1099511628211
+    offset: 14695981039346656037
+128-bit
+    prime: 2^88 + 2^8 + 0x3b = 309485009821345068724781371
+    offset: 144066263297769815596495629667062367629
+256-bit
+    prime: 2^168 + 2^8 + 0x63 = 374144419156711147060143317175368453031918731002211
+    offset: 100029257958052580907070968620625704837092796014241193945225284501741471925557
+```
 
 產生出該 key 的 address，然後將 key 填入 Node 裡，並將該 address 的內容指向該 Node，若未來發生 collison，則以 linked list 接在其後面
 
-兩倍大的陣列搭配非線性的 hash function，可預期其碰撞機率應該很低
-
 Time complexity: $O(1)$ 
-
-
 
 
 
@@ -136,11 +159,21 @@ valgrind --leak-check=full --show-leak-kinds=all --verbose ./DS_perf -d 1e6 -q 1
 
 ## E. 結論
 
+使用 integer 做 hash 其實是有點違反 hash 的實做目的的，既然已經是 integer 了，何不直接將 integer 當作 address 直接插入資料呢？
 
+只是，我們還是要實作 hash function，這對於學習比較有幫助
+
+
+
+就結果而論，因為資料是使用 integer，所以使得所有比較方法都不需要做 strcmp，大幅發揮 qsort 的能力，所以 binary search 最快，接著是 hash，相信如果是字串處理的話，hash 會是最快的
+
+接著是 binary search tree，因為他每次要插入新的值時，都要先產生 new node，從 strace 中也可看出，brk 被呼叫的次數與 linked list 差不多，遠高於其他的比較方法，也因此，雖然 linked list traversal 和 array linear search 時間複雜度是一樣的，但是 linear search 還是比較快
 
 
 
 ## F. Reference
+
+FNV-1a Algorithm: https://reurl.cc/NX5Nvp
 
 4102150_02 System Programming, instructor: Prof. Shi-Wu Lo
 

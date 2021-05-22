@@ -16,7 +16,7 @@ static bool hash_free(HN **arr, int arrsize);
 static void hash(int arrsize, int query) {
     FILE *fp;
     HN **arr;
-    int num;
+    int num, collision = 0;
     unsigned long long addr;
     struct timespec start, end;
     time_t diff;
@@ -36,9 +36,10 @@ static void hash(int arrsize, int query) {
         fscanf(fp, "%d", &num);
         newNode->key = num;
         addr = key2addr(arrsize << 1, num);
-        if (addr < 0) addr *= -1;
+        // if (addr < 0) addr *= -1;
         if (arr[addr] == NULL) arr[addr] = newNode;
         else {
+            ++collision;
             HN *traverse = arr[addr];
             while (traverse->next != NULL) {
                 traverse = traverse->next;
@@ -48,6 +49,7 @@ static void hash(int arrsize, int query) {
     }
     clock_gettime(CLOCK_MONOTONIC, &end);
     diff = (end.tv_sec - start.tv_sec) * 1000000000 + end.tv_nsec - start.tv_nsec;
+    printf("Hash collision: %d\n", collision);
     printf("Time for insert key to hashtable: %ldns = %.2lfs\n", diff, (double)diff / 1000000000.0);
     num = 0;
 
@@ -68,10 +70,15 @@ static void hash(int arrsize, int query) {
 ///////////////////////////////////////////////////////////////////////////////////////
 
 static inline unsigned long long key2addr(int arrsize, int key) {
-    unsigned long long addr;
-    addr = key - (1 << 30);  // hash(x) = (x - INT_MAX / 2) ^ 2
-    addr *= addr;
+    unsigned long long addr = 2166136261;
+    // addr = key - (1 << 30);  // hash(x) = (x - INT_MAX / 2) ^ 2
+    // addr *= addr;
+
+    /*        FNV-1a algorithm        */
+    addr ^= key;
+    addr *= 16777619;
     addr %= arrsize;
+    // reference: https://reurl.cc/NX5Nvp
     return addr;
 }
 
