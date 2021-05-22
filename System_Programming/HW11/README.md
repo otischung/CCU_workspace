@@ -137,9 +137,3 @@ signal(SIGINT, SIG_IGN);
 ## The Pros and Cons of Signal
 
 嵌入式程式可能會發現訊號對於行程間通訊很有用，因為訊號的計算和記憶體占用很小，但是，由於 race condition，對於處理 asynchronous 的 signal，就有著致命弱點，例如，如果要在 sighandler 裡使用 non-reentrant (e.g. malloc, printf)，面對 signal 再 signal 的情況下，也就是處理第一個 signal 時，中間又來一個 signal，就很有機會發生不可預期的錯誤，programmer 必須自己使用 sigprocmask() 來阻斷其他 signal 的傳入
-
----------------------------------------------------------
-
-最後的壓縮指令 
-`tar jcvf filename.tar.bz2 target`
-
