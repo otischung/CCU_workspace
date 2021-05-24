@@ -125,3 +125,28 @@ module HA(clk, a, b, s, c);
     end
     
 endmodule
+
+/* Sign Extension ver.2
+
+ext_a   |   a7      a7      a7      a7      a7      a7      a7      a7      a7   |  a6      a5      a4      a3      a2      a1      a0
+ext_b   |   b7      b7      b7      b7      b7      b7      b7      b7      b7   |  b6      b5      b4      b3      b2      b1      b0
+--------|-------------------------------------------------------------------------------------------------------------------------------
+ab00    |   a7b0    a7b0    a7b0    a7b0    a7b0    a7b0    a7b0    a7b0    a7b0 /  a6b0    a5b0    a4b0    a3b0    a2b0    a1b0    a0b0
+ab01    |   a7b1    a7b1    a7b1    a7b1    a7b1    a7b1    a7b1    a7b1 /  a6b1    a5b1    a4b1    a3b1    a2b1    a1b1    a0b1
+ab02    |   a7b2    a7b2    a7b2    a7b2    a7b2    a7b2    a7b2 /  a6b2    a5b2    a4b2    a3b2    a2b2    a1b2    a0b2
+ab03    |   a7b3    a7b3    a7b3    a7b3    a7b3    a7b3 /  a6b3    a5b3    a4b3    a3b3    a2b3    a1b3    a0b3
+ab04    |   a7b4    a7b4    a7b4    a7b4    a7b4 /  a6b4    a5b4    a4b4    a3b4    a2b4    a1b4    a0b4
+ab05    |   a7b5    a7b5    a7b5    a7b5 /  a6b5    a5b5    a4b5    a3b5    a2b5    a1b5    a0b5
+ab06    |   a7b6    a7b6    a7b6 /  a6b6    a5b6    a4b6    a3b6    a2b6    a1b6    a0b6
+ab07    |   a7b7____a7b7 /  a6b7    a5b7    a4b7    a3b7    a2b7    a1b7    a0b7
+--------|-------------------------------------------------------------------------------------------------------------------------------
+ab08    |   a7b7    a6b7    a5b7    a4b7    a3b7    a2b7    a1b7    a0b7
+ab09    |   a6b7    a5b7    a4b7    a3b7    a2b7    a1b7    a0b7
+ab10    |   a5b7    a4b7    a3b7    a2b7    a1b7    a0b7
+ab11    |   a4b7    a3b7    a2b7    a1b7    a0b7
+ab12    |   a3b7    a2b7    a1b7    a0b7
+ab13    |   a2b7    a1b7    a0b7
+ab14    |   a1b7    a0b7
+ab15    |   a0b7
+
+*/
