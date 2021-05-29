@@ -130,7 +130,7 @@ execlp("ls", "ls", "/", "-R", NULL);                // 7️⃣
 
 ## freopen 的特性
 
-fopen 和 freopen 都預設 4096 bytes 的 _IOFBF，故當 reopen stdout, stderr 之後，我們在 stdout.log 裡的 0-9: hello, 試著在10秒內切斷連線Orz；以及 stderr.log 的 * 都不會被印出來，因為存入字元尚未達到 4096 bytes，就被 execlp 成 ls 了
+fopen 和 freopen 都預設 4096 bytes 的 _IOFBF，故當 reopen stdout, stderr 之後，我們在 stdout.log 裡的 0-9: hello, 試著在10秒內切斷連線；以及 stderr.log 的 * 都不會被印出來，因為存入字元尚未達到 4096 bytes，就被 execlp 成 ls 了
 
 要解決這個問題，有兩種方法
 
