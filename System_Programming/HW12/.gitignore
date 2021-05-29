@@ -1,5 +1,7 @@
 bin
 .vscode
+stdout.log
+stderr.log
 HW12_408410120.tar.bz2
 HW12_408410120.md
 HW12_408410120.pdf

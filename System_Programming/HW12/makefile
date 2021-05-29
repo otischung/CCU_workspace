@@ -11,4 +11,4 @@ all: ${EXE}
 	${CC} ${CFLAGS} $@.c -o ./bin/$@
 
 clean:
-	rm -f ./bin/*
+	rm -f ./bin/* stdout.log stderr.log
