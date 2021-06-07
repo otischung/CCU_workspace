@@ -20,7 +20,10 @@ int main(int argc, char **argv) {
     if (argc != 3) usage(argv[0]);
 
     readfd = open(argv[1], O_RDONLY, S_IRUSR);
-    if (readfd < 0) perror("readfd open failed");
+    if (readfd < 0) {
+        perror("readfd open failed");
+        exit(1);
+    }
 
     fileSize = lseek(readfd, 0, SEEK_END);
     buf = (char *)malloc(fileSize * sizeof(char));
@@ -29,7 +32,10 @@ int main(int argc, char **argv) {
     ret = read(readfd, buf, fileSize);
 
     writefd = open(argv[2], O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
-    if (writefd < 0) perror("writefd open failed");
+    if (writefd < 0) {
+        perror("writefd open failed");
+        exit(1);
+    }
 
     ret = write(writefd, buf, fileSize);
 
