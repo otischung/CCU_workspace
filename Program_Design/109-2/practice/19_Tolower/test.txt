@@ -1,0 +1,2 @@
+ABCDEFGHIJKLMNOPQRSTUVWXYZ,./!@#$%^&*()_+-=[]{}\|;:'"?><`~abcdefghijklmnopqrstuvwxyz
+不要丟Juice Judge
