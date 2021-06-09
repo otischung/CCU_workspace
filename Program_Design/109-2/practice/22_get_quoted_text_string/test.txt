@@ -1,0 +1,3 @@
+book is "red and black"
+apple is "good" and "bad"
+pineapple "university"
