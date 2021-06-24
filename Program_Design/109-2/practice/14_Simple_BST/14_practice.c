@@ -59,31 +59,20 @@ Node *BST_newNode(char *key) {
 }
 
 Node *BST_insert(Node *head, char *key) {
-    Node *traverse;
+    Node *traverse = head;
     
-    if (head == NULL) {
-        traverse = BST_newNode(key);
-        return traverse;
+    if (head == NULL) { 
+        return BST_newNode(key);
     }
-    
-    traverse = head;
     
     if (!strcmp(traverse->name, key)) {
         return head;
     }
     
     if (strcmp(key, traverse->name) < 0) {
-        if (traverse->left == NULL) {
-            traverse->left = BST_newNode(key);
-        } else {
-            BST_insert(traverse->left, key);
-        }
+        traverse->left = BST_insert(traverse->left, key);
     } else {
-        if (traverse->right == NULL) {
-            traverse->right = BST_newNode(key);
-        } else {
-            BST_insert(traverse->right, key);
-        }
+        traverse->right = BST_insert(traverse->right, key);
     }
     
     return head;
