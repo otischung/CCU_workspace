@@ -1,0 +1,9 @@
+bin
+.vscode
+osm_log.txt
+sr4bm_log.txt
+lab9_hw_unsigned.vcd
+lab9_hw_unsigned_osm.vcd
+lab9_hw_unsigned_sr4bm.vcd
+README.pdf
+

@@ -1,0 +1,6 @@
+bin
+.vscode
+mealy
+moore
+hw_mealy.fsdb
+hw_moore.fsdb
