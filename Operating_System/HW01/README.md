@@ -1,4 +1,4 @@
-**Operating System Homework 01  資工2B 408410120 鍾博丞**
+**Operating System Homework 01  資工3B 408410120 鍾博丞**
 
 -----------------------------------------
 
