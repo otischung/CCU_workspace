@@ -1,4 +1,4 @@
 .vscode
 OX_server
 OX_client
-server.c
+server
