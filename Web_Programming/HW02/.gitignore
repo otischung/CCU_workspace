@@ -1,3 +1,4 @@
 .vscode
-web_server
-output.jpg
+OX_server
+OX_client
+server.c
