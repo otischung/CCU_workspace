@@ -22,35 +22,37 @@ short matrix[3][3];
     }                                 \
 })
 
-#define dumpMatrix(fp) ({                     \
-    for (int i = 0; i < 3; ++i) {             \
-        for (int j = 0; j < 3; ++j) {         \
-            fputc(' ', (fp));                 \
-            if (matrix[i][j] == 1) {          \
-                fputc('X', (fp));             \
-            } else if (matrix[i][j] == 0) {   \
-                fputc('O', (fp));             \
-            } else {                          \
-                fputc(' ', (fp));             \
-            }                                 \
-            fputc(' ', (fp));                 \
-            if (j < 2)                        \
-                fputc('|', (fp));             \
-        }                                     \
-        if (i < 2)                            \
-            fprintf((fp), "\n-----------\n"); \
-    }                                         \
-    fprintf((fp), "\n\n");                    \
-})
+#define dumpMatrix(fp)                            \
+    do {                                          \
+        for (int i = 0; i < 3; ++i) {             \
+            for (int j = 0; j < 3; ++j) {         \
+                fputc(' ', (fp));                 \
+                if (matrix[i][j] == 1) {          \
+                    fputc('X', (fp));             \
+                } else if (matrix[i][j] == 0) {   \
+                    fputc('O', (fp));             \
+                } else {                          \
+                    fputc(' ', (fp));             \
+                }                                 \
+                fputc(' ', (fp));                 \
+                if (j < 2)                        \
+                    fputc('|', (fp));             \
+            }                                     \
+            if (i < 2)                            \
+                fprintf((fp), "\n-----------\n"); \
+        }                                         \
+        fprintf((fp), "\n\n");                    \
+    } while (0)
 
-#define usage(fp) ({                                             \
-    fprintf((fp), "Enter two numbers to describe location\n\n"); \
-    fprintf((fp), " 0 0 | 0 1 | 0 2\n");                         \
-    fprintf((fp), "----------------\n");                         \
-    fprintf((fp), " 1 0 | 1 1 | 1 2\n");                         \
-    fprintf((fp), "----------------\n");                         \
-    fprintf((fp), " 2 0 | 2 1 | 2 2\n");                         \
-})
+#define usage(fp)                                              \
+    do {                                                       \
+        fprintf((fp), "Enter two numbers for coordinate\n\n"); \
+        fprintf((fp), " 0 0 | 0 1 | 0 2\n");                   \
+        fprintf((fp), "----------------\n");                   \
+        fprintf((fp), " 1 0 | 1 1 | 1 2\n");                   \
+        fprintf((fp), "----------------\n");                   \
+        fprintf((fp), " 2 0 | 2 1 | 2 2\n");                   \
+    } while (0)
 
 int main() {
     int listen_fd, connect_fd;
