@@ -98,11 +98,9 @@ int main() {
         }
 
         connect_fp = fdopen(connect_fd, "a+");
-        setvbuf(connect_fp, NULL, _IONBF, 0);
+        setvbuf(connect_fp, NULL, _IOLBF, 4096);
         fprintf(connect_fp, "Please login to play:\n");
-        // fgets(username, MAXLINE, connect_fp);
-        fscanf(connect_fp, "%s", username);
-        fprintf(stdout, "Your name is %s\n", username);  // test
+        fgets(username, MAXLINE, connect_fp);
         fprintf(connect_fp, "Your name is %s\n", username);
         getchar();
     }

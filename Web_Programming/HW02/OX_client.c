@@ -45,12 +45,12 @@ int main(int argc, char **argv) {
     }
 
     socket_fp = fdopen(socket_fd, "a+");
-    setvbuf(socket_fp, NULL, _IONBF, 0);
+    setvbuf(socket_fp, NULL, _IOLBF, 4096);
     forever {
         fgets(recvline, MAXLINE, socket_fp);
         printf("%s", recvline);
-        scanf("%s", recvline);
-        fprintf(socket_fp, "%s", recvline);
+        fgets(recvline, MAXLINE, stdin);
+        fprintf(socket_fp, "%s\n", recvline);
         fgets(recvline, MAXLINE, socket_fp);
         printf("%s", recvline);
     }
