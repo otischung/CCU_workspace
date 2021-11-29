@@ -7,6 +7,7 @@
 #include <sys/socket.h>
 #include <time.h>
 #include <unistd.h>
+#include <fcntl.h>
 #define forever while (1)
 #define MAXLINE 8192
 
@@ -17,6 +18,7 @@ int main(int argc, char **argv) {
     char ip_addr[1024];
     char recvline[MAXLINE];
     struct sockaddr_in servaddr;
+    int ret;
 
     if (argc == 1) {
         strcpy(ip_addr, "127.0.0.1");
@@ -44,15 +46,19 @@ int main(int argc, char **argv) {
         exit(1);
     }
 
+    ret = fcntl(socket_fd, F_SETFL, O_NONBLOCK);
+    if (ret == -1) {
+        perror("fcntl set nonblock error");
+        exit(1);
+    }
     socket_fp = fdopen(socket_fd, "a+");
     setvbuf(socket_fp, NULL, _IOLBF, 4096);
     forever {
-        fgets(recvline, MAXLINE, socket_fp);
-        printf("%s", recvline);
         fgets(recvline, MAXLINE, stdin);
         fprintf(socket_fp, "%s\n", recvline);
-        fgets(recvline, MAXLINE, socket_fp);
-        printf("%s", recvline);
+        while (fread(recvline, MAXLINE, 1, socket_fp) > 0) {
+            printf("%s", recvline);
+        }
     }
 
     fclose(socket_fp);
