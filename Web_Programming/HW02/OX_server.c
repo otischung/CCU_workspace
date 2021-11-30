@@ -10,6 +10,11 @@
 #include <sys/select.h>
 #include <sys/socket.h>
 #include <unistd.h>
+#include <pthread.h>
+
+#include "serve_client.h"
+#include "states.h"
+#include "utils.h"
 #define MAXLINE 8192
 #define forever while (1)
 
@@ -58,32 +63,27 @@ short matrix[3][3];
         fprintf((fp), " 2 0 | 2 1 | 2 2\n");                   \
     } while (0)
 
-#define max(a, b) (a) > (b) ? (a) : (b)
-
 /* ---------------- Define Player's Information ---------------- */
 typedef struct PLAYER {
     char name[MAXLINE];
     char pass[MAXLINE];
 } Player;
 
-void serve_login(FILE *connect_fp) {
+void serve_login(int fd) {
     char username[MAXLINE];
-
-    fprintf(connect_fp, "Please login to play:\n");
-    fgets(username, MAXLINE, connect_fp);
-    fprintf(connect_fp, "Your name is %s\n", username);
+    write(fd, "What is your name?\n", 20);
 }
 
 int main() {
     fd_set read_fds, active_fd_set;
     int sock_fd, new_fd, max_fd;
-    FILE *connect_fp;
     struct sockaddr_in servaddr;  // <netinet/in.h>
-    int ret;
+    int ret, flags;
     unsigned val = 1;
     char command[MAXLINE];
     Player *player;
 
+    printf("This is server\n");
     player = malloc(2 * sizeof(Player));
     strncpy(player[0].name, "asdf", MAXLINE);
     strncpy(player[0].pass, "asdf", MAXLINE);
@@ -115,7 +115,7 @@ int main() {
         ret = select(max_fd + 1, &read_fds, NULL, NULL, NULL);
         if (ret < 0) {
             perror("select error");
-            exit(1);
+            continue;
         }
         for (int i = 0; i < FD_SETSIZE; ++i) {  // Service all sockets
             if (FD_ISSET(i, &read_fds)) {
@@ -125,24 +125,25 @@ int main() {
                         perror("accept error");
                         continue;
                     }
+
                     FD_SET(new_fd, &active_fd_set);
                     if (new_fd > max_fd) {
                         max_fd = new_fd;
                     }
-                    ret = fcntl(new_fd, F_SETFL, O_NONBLOCK);
+                    flags = fcntl(new_fd, F_GETFL, 0);
+                    if (ret < 0) {
+                        perror("fcntl read flags error");
+                        close(new_fd);
+                        continue;
+                    }
+                    ret = fcntl(new_fd, F_SETFL, flags | O_NONBLOCK);
                     if (ret == -1) {
                         perror("fcntl set nonblock error");
-                        exit(1);
+                        close(new_fd);
+                        continue;
                     }
                 } else {  // Data arriving on an already-connected socket
-                    connect_fp = fdopen(i, "a+");
-                    setvbuf(connect_fp, NULL, _IOLBF, 4096);
-                    fgets(command, MAXLINE, connect_fp);
-                    if (!strcmp(command, "login\n")) {
-                        serve_login(connect_fp);
-                    } else {
-                        write(i, "invalid command\n", 17);
-                    }
+                    client_handle(i);
                 }
             }
         }
