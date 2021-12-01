@@ -12,6 +12,7 @@
 
 #define forever while (1)
 #define MAX_CLIENTS 1024
+#define MAXLINE 8192
 
 static inline int max(int a, int b) {
     return a > b ? a : b;

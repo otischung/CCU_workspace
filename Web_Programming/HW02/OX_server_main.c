@@ -52,6 +52,7 @@ int main() {
     unsigned val = 1;
     char command[MAXLINE];
 
+    printf("This is server\n");
     sock_fd = socket(AF_INET, SOCK_STREAM, 0);  // IPv4, TCP  <sys/socket.h>
     setsockopt(sock_fd, SOL_SOCKET, SO_REUSEADDR, &val, sizeof(val));
     bzero(&servaddr, sizeof(servaddr));  // <strings.h>
