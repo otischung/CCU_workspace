@@ -4,39 +4,13 @@
 #include "database.h"
 #include "states.h"
 #include "utils.h"
-#define MAX_CLIENTS 1024
-
-struct client {
-    struct game *game;
-    int logged_in;
-    int inviting;
-    char username[8192];
-};
-struct game {
-    int game_id;
-    int grid[3][3];  // -1 for null, 0 1 for players
-    int players[2];  // -1 for blank (waiting)
-    int turn;
-};
-
-struct client clients[MAX_CLIENTS];
-
-static void client_end_game(int fd) {
-    if (fd <= 0) return;
-    clients[fd].game = NULL;
-    clients[fd].inviting = 0;
-}
-static int leave_player(int fd) {
-    client_end_game(fd);
-    clients[fd].logged_in = 0;
-    strcpy(clients[fd].username, "");
-    fprintf(stderr, "close client %d\n", fd);
-    return close(fd);
-}
 
 static struct game *game_init(struct game *game) {
-    if (game == NULL) game = (struct game *)GC_malloc(sizeof(struct game));
-    assert(game != NULL);
+    if (game == NULL) game = (struct game *)malloc(sizeof(struct game));
+    if (game == NULL) {
+        perror("malloc failed");
+        exit(EXIT_FAILURE);
+    }
     for (int i = 0; i < 3; i++)
         for (int j = 0; j < 3; j++) game->grid[i][j] = -1;
 
@@ -70,7 +44,7 @@ static void game_finish(struct game *game, int winner) {
     }
     client_end_game(game->players[0]);
     client_end_game(game->players[1]);
-    // free(game); // use GC_malloc so free is no longger needed.
+    free(game);
 }
 
 // non-zero return for invalid step
@@ -127,7 +101,7 @@ static inline int login(int fd) {
     if (clients[fd].logged_in) {
         clients[fd].logged_in = 0;
     }
-    
+
     if (read_n_and_string(fd, username, 8192) != -1 &&
         read_n_and_string(fd, password, 8192) != -1) {
         if (user_check(username, password)) {
@@ -160,7 +134,7 @@ static inline int list_client(int fd) {
             cid[n++] = i;
         }
     }
-    
+
     ret |= write_uint32_to_net(fd, OX_LIST_CLIENTS);
     ret |= write_uint32_to_net(fd, n);
     if (ret < 0) {
