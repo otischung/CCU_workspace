@@ -9,16 +9,26 @@
 #include "utils.h"
 
 static char buf[MAXLINE];
-static int gird[3][3];
-static void dump_gird() {
-    const char GI[] = " OX";
+static short matrix[3][3];
+
+#define cleanMatrix()                     \
+    do {                                  \
+        for (int i = 0; i < 3; ++i) {     \
+            for (int j = 0; j < 3; ++j) { \
+                matrix[i][j] = 0;         \
+            }                             \
+        }                                 \
+    } while (0)
+
+static void dump_matrix() {
+    const char OX[] = " OX";
     puts("\033c");
     printf("+---+---+---+\n");
-    printf("| %c | %c | %c |\n", GI[gird[0][0]], GI[gird[0][1]], GI[gird[0][2]]);
+    printf("| %c | %c | %c |\n", OX[matrix[0][0]], OX[matrix[0][1]], OX[matrix[0][2]]);
     printf("+---+---+---+\n");
-    printf("| %c | %c | %c |\n", GI[gird[1][0]], GI[gird[1][1]], GI[gird[1][2]]);
+    printf("| %c | %c | %c |\n", OX[matrix[1][0]], OX[matrix[1][1]], OX[matrix[1][2]]);
     printf("+---+---+---+\n");
-    printf("| %c | %c | %c |\n", GI[gird[2][0]], GI[gird[2][1]], GI[gird[2][2]]);
+    printf("| %c | %c | %c |\n", OX[matrix[2][0]], OX[matrix[2][1]], OX[matrix[2][2]]);
     printf("+---+---+---+\n");
     puts("");
 }
@@ -79,11 +89,8 @@ static int login(int socket_fd) {
 
 // return: 0 for tie, 1 for win, 2 for lose, < 0 for errors
 static int game_loop(int fd, int player_id) {
-    for (int i = 0; i < 3; i++)
-        for (int j = 0; j < 3; j++) {
-            gird[i][j] = 0;
-        }
-    dump_gird();
+    cleanMatrix();
+    dump_matrix();
     puts("waiting...");
     for (;;) {
         uint32_t action;
@@ -95,11 +102,11 @@ static int game_loop(int fd, int player_id) {
                 if (act_player == player_id) {
                     uint32_t x, y;
                     do {
-                        dump_gird();
-                        printf("Your turn!\nPlease input 'x y' in [0, 3)\n");
+                        dump_matrix();
+                        printf("Your turn!\nPlease input 'x y' in [0, 2]\n");
                         scanf("%u %u", &x, &y);
                         printf("%u %u\n", x, y);
-                    } while (!(x < 3 && y < 3) || (gird[x][y] != 0));
+                    } while (!(x < 3 && y < 3) || (matrix[x][y] != 0));
                     uint32_t action_step = htonl(OX_ACT);
                     int x_bak = x, y_bak = y;
                     x = htonl(x);
@@ -112,8 +119,8 @@ static int game_loop(int fd, int player_id) {
                     memcpy(cur, &y, sizeof(y));
                     cur += sizeof(y);
                     write(fd, buf, cur - buf);
-                    gird[x_bak][y_bak] = 1;
-                    dump_gird();
+                    matrix[x_bak][y_bak] = 1;
+                    dump_matrix();
                     printf("Waiting for other...\n");
 
                 } else {
@@ -125,8 +132,8 @@ static int game_loop(int fd, int player_id) {
                         printf("x: %u,  y: %u\n", x, y);
                         return -100;
                     }
-                    gird[x][y] = 2;
-                    dump_gird();
+                    matrix[x][y] = 2;
+                    dump_matrix();
                 }
                 break;
 

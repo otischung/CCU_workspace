@@ -18,32 +18,6 @@
 #define MAXLINE 8192
 #define forever while (1)
 
-/* ---------------- Define Matrix Operation ---------------- */
-// O: 0, X: 1
-short matrix[3][3];
-
-#define cleanMatrix()                     \
-    do {                                  \
-        for (int i = 0; i < 3; ++i) {     \
-            for (int j = 0; j < 3; ++j) { \
-                matrix[i][j] = 0;         \
-            }                             \
-        }                                 \
-    } while (0)
-
-static void dump_matrix() {
-    const char GI[] = " OX";
-    puts("\033c");
-    printf("+---+---+---+\n");
-    printf("| %c | %c | %c |\n", GI[matrix[0][0]], GI[matrix[0][1]], GI[matrix[0][2]]);
-    printf("+---+---+---+\n");
-    printf("| %c | %c | %c |\n", GI[matrix[1][0]], GI[matrix[1][1]], GI[matrix[1][2]]);
-    printf("+---+---+---+\n");
-    printf("| %c | %c | %c |\n", GI[matrix[2][0]], GI[matrix[2][1]], GI[matrix[2][2]]);
-    printf("+---+---+---+\n");
-    puts("");
-}
-
 int main() {
     fd_set read_fds, active_fd_set;
     int sock_fd, new_fd, max_fd;
