@@ -1,13 +1,13 @@
 CC?=gcc-11
 CFLAGS=-g
-SRC=$(wildcard *.c)
-TAR=$(patsubst %.c, %, $(SRC))
-CLIB=-lacl -lcurl
 
-all: ${TAR}
+all: OX_server OX_client
 
-%:	%.c
-	${CC} ${CFLAGS} $@.c -o $@
+OX_server: ./OX_server_main.c ./serve_client.h ./states.h ./utils.h
+	${CC} ${CFLAGS} OX_server_main.c -o OX_server
+
+OX_client: ./OX_client_main.c ./states.h ./utils.h
+	${CC} ${CFLAGS} OX_client_main.c -o OX_client
 
 clean:
-	rm ${TAR}
+	rm OX_server OX_client

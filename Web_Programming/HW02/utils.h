@@ -16,6 +16,11 @@ static inline int max(int a, int b) {
     return a > b ? a : b;
 }
 
+static inline int set_nonblocking(int fd) {
+    int flags = fcntl(fd, F_GETFL, 0);
+    return fcntl(fd, F_SETFL, flags | O_NONBLOCK);
+}
+
 static inline int read_uint32_from_net(int fd, uint32_t *ret) {
     uint32_t n;
     *ret = 0;

@@ -26,52 +26,22 @@ short matrix[3][3];
     do {                                  \
         for (int i = 0; i < 3; ++i) {     \
             for (int j = 0; j < 3; ++j) { \
-                matrix[i][j] = -1;        \
+                matrix[i][j] = 0;         \
             }                             \
         }                                 \
     } while (0)
 
-#define dumpMatrix(fp)                            \
-    do {                                          \
-        for (int i = 0; i < 3; ++i) {             \
-            for (int j = 0; j < 3; ++j) {         \
-                fputc(' ', (fp));                 \
-                if (matrix[i][j] == 1) {          \
-                    fputc('X', (fp));             \
-                } else if (matrix[i][j] == 0) {   \
-                    fputc('O', (fp));             \
-                } else {                          \
-                    fputc(' ', (fp));             \
-                }                                 \
-                fputc(' ', (fp));                 \
-                if (j < 2)                        \
-                    fputc('|', (fp));             \
-            }                                     \
-            if (i < 2)                            \
-                fprintf((fp), "\n-----------\n"); \
-        }                                         \
-        fprintf((fp), "\n\n");                    \
-    } while (0)
-
-#define usage(fp)                                              \
-    do {                                                       \
-        fprintf((fp), "Enter two numbers for coordinate\n\n"); \
-        fprintf((fp), " 0 0 | 0 1 | 0 2\n");                   \
-        fprintf((fp), "----------------\n");                   \
-        fprintf((fp), " 1 0 | 1 1 | 1 2\n");                   \
-        fprintf((fp), "----------------\n");                   \
-        fprintf((fp), " 2 0 | 2 1 | 2 2\n");                   \
-    } while (0)
-
-/* ---------------- Define Player's Information ---------------- */
-typedef struct PLAYER {
-    char name[MAXLINE];
-    char pass[MAXLINE];
-} Player;
-
-void serve_login(int fd) {
-    char username[MAXLINE];
-    write(fd, "What is your name?\n", 20);
+static void dump_matrix() {
+    const char GI[] = " OX";
+    puts("\033c");
+    printf("+---+---+---+\n");
+    printf("| %c | %c | %c |\n", GI[matrix[0][0]], GI[matrix[0][1]], GI[matrix[0][2]]);
+    printf("+---+---+---+\n");
+    printf("| %c | %c | %c |\n", GI[matrix[1][0]], GI[matrix[1][1]], GI[matrix[1][2]]);
+    printf("+---+---+---+\n");
+    printf("| %c | %c | %c |\n", GI[matrix[2][0]], GI[matrix[2][1]], GI[matrix[2][2]]);
+    printf("+---+---+---+\n");
+    puts("");
 }
 
 int main() {
@@ -81,14 +51,6 @@ int main() {
     int ret, flags;
     unsigned val = 1;
     char command[MAXLINE];
-    Player *player;
-
-    printf("This is server\n");
-    player = malloc(2 * sizeof(Player));
-    strncpy(player[0].name, "asdf", MAXLINE);
-    strncpy(player[0].pass, "asdf", MAXLINE);
-    strncpy(player[1].name, "qwerty", MAXLINE);
-    strncpy(player[1].pass, "qwerty", MAXLINE);
 
     sock_fd = socket(AF_INET, SOCK_STREAM, 0);  // IPv4, TCP  <sys/socket.h>
     setsockopt(sock_fd, SOL_SOCKET, SO_REUSEADDR, &val, sizeof(val));
@@ -105,6 +67,10 @@ int main() {
     if (ret < 0) {
         perror("listen error");
         exit(1);
+    }
+    ret = set_nonblocking(sock_fd);
+    if (ret < 0) {
+        perror("set socket fd nonblocking failed");
     }
     FD_ZERO(&active_fd_set);
     FD_SET(sock_fd, &active_fd_set);
@@ -126,22 +92,17 @@ int main() {
                         continue;
                     }
 
+                    ret = set_nonblocking(new_fd);
+                    if (ret < 0) {
+                        perror("set new fd nonblocking failed");
+                    }
+
                     FD_SET(new_fd, &active_fd_set);
                     if (new_fd > max_fd) {
                         max_fd = new_fd;
                     }
-                    flags = fcntl(new_fd, F_GETFL, 0);
-                    if (ret < 0) {
-                        perror("fcntl read flags error");
-                        close(new_fd);
-                        continue;
-                    }
-                    ret = fcntl(new_fd, F_SETFL, flags | O_NONBLOCK);
-                    if (ret == -1) {
-                        perror("fcntl set nonblock error");
-                        close(new_fd);
-                        continue;
-                    }
+
+                    client_new(new_fd);
                 } else {  // Data arriving on an already-connected socket
                     client_handle(i);
                 }

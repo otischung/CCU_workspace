@@ -3,10 +3,13 @@ enum states {
     OX_LOGIN,
     OX_LOGIN_SUCCESS,
     OX_LOGIN_FAILED,
-    OX_LIST_CLIENT,
+    OX_LIST_CLIENTS,
     OX_INVITE,
-    OX_INVITE_RESULT,
+    OX_INVITE_ACCEPT,
+    OX_INVITE_REJECT,
     OX_START,
-    OX_FINISH,
-    OX_ACT
+    OX_ACT,
+    OX_WIN,
+    OX_LOSE,
+    OX_TIE
 };
