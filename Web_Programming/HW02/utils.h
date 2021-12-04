@@ -22,11 +22,11 @@ struct client {
     struct game *game;
     int logged_in;
     int inviting;
-    char username[8192];
+    char username[MAXLINE];
 };
 struct game {
     int game_id;
-    int grid[3][3];  // -1 for null, 0 1 for players
+    int martix[3][3];  // -1 for null, 0 1 for players
     int players[2];  // -1 for blank (waiting)
     int turn;
 };

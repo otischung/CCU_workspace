@@ -50,7 +50,7 @@ int main(int argc, char **argv) {
         }
         ret = login(socket_fd);
         if (ret < 0) {
-            close(socket_fd);
+            // close(socket_fd);
             fprintf(stderr, "login failed, trying to relogin\n\n");
         }
     } while (ret < 0);

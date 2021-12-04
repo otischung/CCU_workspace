@@ -20,6 +20,13 @@ static short matrix[3][3];
         }                                 \
     } while (0)
 
+static void dump_matrix();
+static int login(int socket_fd);
+static int game_loop(int fd, int player_id);
+static int invite(int fd, uint32_t player_id);
+static int invite_request(int fd);
+static int impl(int fd, uint32_t player_id);
+
 static void dump_matrix() {
     const char OX[] = " OX";
     puts("\033c");
@@ -89,26 +96,30 @@ static int login(int socket_fd) {
 
 // return: 0 for tie, 1 for win, 2 for lose, < 0 for errors
 static int game_loop(int fd, int player_id) {
+    uint32_t action;
+    uint32_t act_player;
+    uint32_t x, y;
+    int x_bak, y_bak;
+    uint32_t action_step;
+
     cleanMatrix();
     dump_matrix();
     puts("waiting...");
-    for (;;) {
-        uint32_t action;
+    forever {
         read_uint32_from_net(fd, &action);
         switch (action) {
             case OX_ACT:
-                uint32_t act_player;
                 read_uint32_from_net(fd, &act_player);
                 if (act_player == player_id) {
-                    uint32_t x, y;
                     do {
                         dump_matrix();
                         printf("Your turn!\nPlease input 'x y' in [0, 2]\n");
                         scanf("%u %u", &x, &y);
                         printf("%u %u\n", x, y);
                     } while (!(x < 3 && y < 3) || (matrix[x][y] != 0));
-                    uint32_t action_step = htonl(OX_ACT);
-                    int x_bak = x, y_bak = y;
+                    action_step = htonl(OX_ACT);
+                    x_bak = x;
+                    y_bak = y;
                     x = htonl(x);
                     y = htonl(y);
                     char *cur = buf;
@@ -122,15 +133,13 @@ static int game_loop(int fd, int player_id) {
                     matrix[x_bak][y_bak] = 1;
                     dump_matrix();
                     printf("Waiting for other...\n");
-
                 } else {
-                    uint32_t x, y;
                     read_uint32_from_net(fd, &x);
                     read_uint32_from_net(fd, &y);
                     if (x > 3 || y > 3) {
                         printf("invalid game step. server bugged.\n");
                         printf("x: %u,  y: %u\n", x, y);
-                        return -100;
+                        return -1;
                     }
                     matrix[x][y] = 2;
                     dump_matrix();
@@ -158,29 +167,35 @@ static int game_loop(int fd, int player_id) {
     }
 }
 static int invite(int fd, uint32_t player_id) {
-    char *cur = buf;
+    char *cur;
+    uint32_t action_invite;
+    uint32_t ret;
+
+    cur = buf;
     player_id = htonl(player_id);
-    uint32_t action_invite = htonl(OX_INVITE);
+    action_invite = htonl(OX_INVITE);
     memcpy(cur, &action_invite, sizeof(action_invite));
     cur += sizeof(action_invite);
     memcpy(cur, &player_id, sizeof(player_id));
     cur += sizeof(player_id);
     write(fd, buf, cur - buf);
 
-    uint32_t ret;
     read_uint32_from_net(fd, &ret);
     return ret;
 }
 
 // return: 1: accept, 0: deny.
 static int invite_request(int fd) {
-    uint32_t invitor = 0;
+    uint32_t invitor;
+    char answer[8192];
+
+    invitor = 0;
     if (read_uint32_from_net(fd, &invitor) != 0) {
         perror("network error");
         exit(EXIT_FAILURE);
     }
     printf("[\033[33;1;5m*\033[0m] %u invites you for a new game! Do you accept it? (y/n)\n", invitor);
-    char answer[8192];
+    
     scanf("%8000s", answer);
     if (!strcmp(answer, "y")) {
         write_uint32_to_net(fd, OX_INVITE_ACCEPT);
