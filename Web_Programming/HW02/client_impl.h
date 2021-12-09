@@ -197,7 +197,7 @@ static int invite_request(int fd) {
     printf("[\033[33;1;5m*\033[0m] %u invites you for a new game! Do you accept it? (y/n)\n", invitor);
     
     scanf("%8000s", answer);
-    if (!strcmp(answer, "y")) {
+    if (!strcmp(answer, "y") || !strcmp(answer, "Y")) {
         write_uint32_to_net(fd, OX_INVITE_ACCEPT);
         return 1;
     } else {
