@@ -2,10 +2,10 @@ CC?=gcc-11
 CFLAGS=-g
 CLIB=-lpcap
 
-all: tcpdump
+all: pcap_parse
 
-tcpdump: ./tcpdump.c
-	${CC} ${CFLAGS} tcpdump.c -o tcpdump ${CLIB}
+pcap_parse: ./pcap_parse.c
+	${CC} ${CFLAGS} pcap_parse.c -o pcap_parse ${CLIB}
 
 clean: 
-	rm -f tcpdump
+	rm -f pcap_parse
