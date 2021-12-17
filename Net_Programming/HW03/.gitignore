@@ -1,3 +1,5 @@
 .vscode
+ipv4.o
+pcap_parse.o
 pcap_parse
 ch17.pptx

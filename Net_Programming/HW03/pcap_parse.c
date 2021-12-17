@@ -5,12 +5,16 @@
 #include <netinet/in.h>
 #include <netinet/in_systm.h> /* required for ip.h */
 #include <netinet/ip.h>
+#include <netinet/ip6.h>
+#include <netinet/tcp.h>
 #include <netinet/udp.h>
 #include <pcap.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#include "ipv4.h"
 
 void got_packet(u_char *argv, const struct pcap_pkthdr *header, const u_char *packet) {
 }
@@ -27,6 +31,7 @@ int main(int argc, char **argv) {
     bpf_u_int32 net;               /* The IP of our sniffing device */
     int optimize;                  /* The optimize flag while compiling.*/
     struct ether_header *eptr;
+    int packet_cnt;
 
     int ret;
 
@@ -68,30 +73,47 @@ int main(int argc, char **argv) {
         return EXIT_FAILURE;
     }
 
+    packet_cnt = 0;
     /* Grab a packet */
-    packet = pcap_next(handle, &header);  // packet = the start pos. of the packet
-    /* Print its length */
-    printf("Jacked a packet with\n");
-    printf("Length of this packet: %u\n", header.len);
-    printf("Length of portion present: %u\n", header.caplen);
-    printf("Time: %u\n\n", header.ts.tv_sec * 1000000 + header.ts.tv_usec);
+    while ((packet = pcap_next(handle, &header)) != NULL) {  // packet = the start pos. of the packet
+        /* Print its length */
+        printf("-------------------------------------------\n");
+        printf("Packet No.%d\n", ++packet_cnt);
+        printf("Length of this packet: %u\n", header.len);
+        printf("Length of portion present: %u\n", header.caplen);
+        printf("Time stamp: %u\n\n", header.ts.tv_sec * 1000000 + header.ts.tv_usec);
 
-    eptr = (struct ether_header *)packet;
-    if (ntohs(eptr->ether_type) == ETHERTYPE_IP) {
-        printf("Ethertype: IPv4\n");
-    } else if (ntohs(eptr->ether_type) == ETHERTYPE_IPV6) {
-        printf("Ethertype: IPv6\n");
-    } else if (ntohs(eptr->ether_type) == ETHERTYPE_ARP) {
-        printf("Ethertype: ARP\n");
-    } else if (ntohs(eptr->ether_type) == ETHERTYPE_REVARP) {
-        printf("Ethertype: RARP\n");
-    } else {
-        fprintf(stderr, "WTF\n");
+        eptr = (struct ether_header *)packet;
+        printf("Destination MAC addr: ");
+        for (int i = 0; i < 6; ++i) {
+            printf("%02x%c", eptr->ether_dhost[i], ":\n"[i == 5]);
+        }
+        printf("Source MAC addr: ");
+        for (int i = 0; i < 6; ++i) {
+            printf("%02x%c", eptr->ether_shost[i], ":\n"[i == 5]);
+        }
+        switch (ntohs(eptr->ether_type)) {
+            case ETHERTYPE_IP:
+                printf("Ethertype: IPv4\n\n");
+                ipv4_parse(packet + 14, header.len - 14);  // MAC: 6 bytes, Type: 2 bytes
+                break;
+            case ETHERTYPE_IPV6:
+                printf("Ethertype: IPv6\n\n");
+                break;
+            case ETHERTYPE_ARP:
+                printf("Ethertype: ARP\n\n");
+                break;
+            case ETHERTYPE_REVARP:
+                printf("Ethertype: RARP\n\n");
+                break;
+            default:
+                fprintf(stderr, "unknown type\n");
+                break;
+        }
+        printf("-------------------------------------------\n");
     }
     /* And close the session */
     pcap_close(handle);
-
     // ret = pcap_loop(handle, 1, got_packet, NULL);
-
     return EXIT_SUCCESS;
 }
