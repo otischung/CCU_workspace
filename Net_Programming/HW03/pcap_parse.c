@@ -1,20 +1,6 @@
 // Reference: https://www.tcpdump.org/pcap.html
-#include <arpa/inet.h>
-#include <net/if.h>
-#include <netinet/if_ether.h>
-#include <netinet/in.h>
-#include <netinet/in_systm.h> /* required for ip.h */
-#include <netinet/ip.h>
-#include <netinet/ip6.h>
-#include <netinet/tcp.h>
-#include <netinet/udp.h>
-#include <pcap.h>
-#include <stdint.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-#include "ipv4.h"
+#include "headers.h"
+#include "network.h"
 
 void got_packet(u_char *argv, const struct pcap_pkthdr *header, const u_char *packet) {
 }
@@ -36,7 +22,7 @@ int main(int argc, char **argv) {
     int ret;
 
     memset(errbuf, '\0', PCAP_ERRBUF_SIZE * sizeof(char));
-    filter_exp = strdup("port 53 or port 80 or port 443");
+    filter_exp = strdup("");
     optimize = 1;
     mask = 0;
     // Find all usable network devices.
@@ -99,6 +85,10 @@ int main(int argc, char **argv) {
                 break;
             case ETHERTYPE_IPV6:
                 printf("Ethertype: IPv6\n\n");
+                ipv6_parse(packet + 14, header.len - 14);
+                break;
+            case ETHERTYPE_IPX:
+                printf("Ethertype: IPX\n\n");
                 break;
             case ETHERTYPE_ARP:
                 printf("Ethertype: ARP\n\n");
@@ -106,8 +96,12 @@ int main(int argc, char **argv) {
             case ETHERTYPE_REVARP:
                 printf("Ethertype: RARP\n\n");
                 break;
+            case 0x0842:
+                printf("Ethertype: WoL\n\n");
+                break;
             default:
-                fprintf(stderr, "unknown type\n");
+                printf("Ethertype: %04x\n", eptr->ether_type);
+                printf("Reference: https://en.wikipedia.org/wiki/EtherType\n\n");
                 break;
         }
         printf("-------------------------------------------\n");
