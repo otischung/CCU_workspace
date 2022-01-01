@@ -38,7 +38,7 @@ u_char *ipv4_parse(const u_char *start_pos, int len) {
     printf("Destination addr: %u.%u.%u.%u\n", a, b, c, d);
 
     printf("TTL: %u\n", iptr->ttl);
-    printf("Datagram length: %u bytes\n", iptr->tot_len);
+    printf("Datagram length: %u bytes\n", ntohs(iptr->tot_len));
 
     switch (iptr->protocol) {
         case IPPROTO_UDP:
@@ -66,7 +66,7 @@ u_char *ipv6_parse(const u_char *start_pos, int len) {
     struct ip6_hdr *iptr;
 
     iptr = (struct ip6_hdr *)start_pos;
-    printf("Payload length: %u\n", iptr->ip6_ctlun.ip6_un1.ip6_un1_plen);
+    printf("Payload length: %u\n", ntohs(iptr->ip6_ctlun.ip6_un1.ip6_un1_plen));
     printf("Hop Limit: %u\n", iptr->ip6_ctlun.ip6_un1.ip6_un1_hlim);
     printf("Source addr: ");
     for (int i = 0; i < 8; ++i) {
