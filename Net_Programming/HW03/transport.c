@@ -6,7 +6,7 @@ u_char *udp_parse(const u_char *start_pos, int len) {
     uptr = (struct udphdr *)start_pos;
     printf("Source port: %u\n", ntohs(uptr->uh_sport));
     printf("Destination port: %u\n", ntohs(uptr->uh_dport));
-    printf("Segment length: %u\n", uptr->uh_ulen);
+    printf("Segment length: %u\n", ntohs(uptr->uh_ulen));
 }
 
 u_char *tcp_parse(const u_char *start_pos, int len) {
