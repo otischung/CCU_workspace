@@ -18,6 +18,8 @@ u_char *tcp_parse(const u_char *start_pos, int len) {
     printf("Sequence num: %u\n", ntohl(tptr->th_seq));
     printf("Acknowledgment num: %u\n", ntohl(tptr->th_ack));
     printf("Header length: %u bytes\n", tptr->th_off << 2);
+    printf("Windows size: %u\n", ntohs(tptr->th_win));
+    printf("Checksum: %u\n", ntohs(tptr->th_sum));
 
     printf("Flags: ");
     if (tptr->th_flags & TH_FIN) printf("FIN ");
