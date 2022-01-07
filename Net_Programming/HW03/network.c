@@ -19,6 +19,8 @@ u_char *ipv4_parse(const u_char *start_pos, int len) {
     }
 
     saddr = ntohl(iptr->saddr);
+    // struct in_addr in;
+    // in.s_addr = iptr->saddr;
     d = saddr % 256;
     saddr /= 256;
     c = saddr % 256;
@@ -26,6 +28,7 @@ u_char *ipv4_parse(const u_char *start_pos, int len) {
     b = saddr % 256;
     saddr /= 256;
     a = saddr;
+    // printf("Source addr: %s\n", inet_ntoa(in));
     printf("Source addr: %u.%u.%u.%u\n", a, b, c, d);
     daddr = ntohl(iptr->daddr);
     d = daddr % 256;
