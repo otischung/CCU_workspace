@@ -1,0 +1,25 @@
+Q1:  請描述自己安裝與執行ARM software development tool的過程
+
+❯ uname -a
+Linux ArchLinux 5.14.6-arch1-1-surface #1 SMP PREEMPT Mon, 20 Sep 2021 13:40:47 +0000 x86_64 GNU/Linux
+我是使用 Arch Linux， 所以只需要使用 yay (yet another yogurt) 安裝即可
+yay arm-none-eabi
+在這裡的 linker: arm-none-eabi-ld 無法正常讀取動態函數庫，所以需要加上以下 flags
+--specs=rdimon.specs -lgcc -lc -lm -lrdimon
+詳細的編譯與組譯過程已經寫在 Makefile 裡面
+
+Q2: 請說明hw1.o與hw1.exe的差別? 可能是什麼原因造成的?
+
+-rwxr-xr-x 1 otischung otischung 120K 10月  5 09:46 hw1.exe
+-rw-r--r-- 1 otischung otischung  920 10月  5 09:46 hw1.o
+hw1.o 只有經過 Assembler，並沒有 Link 其他 .o 或 .so 的檔案，所以並不完整
+hw1.exe 有經過 Linker，還會加上 ELF header，並將其權限設定為可執行 (x)，所以檔案也比較大
+
+Q3: sample_O0.o與sample_O3.o檔案大小的差別? 可能是什麼原因造成的?
+
+-rw-r--r-- 1 otischung otischung 1.0K 10月  5 09:51 sample_O0.o
+-rw-r--r-- 1 otischung otischung 1.1K 10月  5 09:51 sample_O0.s
+-rw-r--r-- 1 otischung otischung 1.1K 10月  5 09:51 sample_O3.o
+-rw-r--r-- 1 otischung otischung  777 10月  5 09:51 sample_O3.s
+
+O3.s 比 O0.s 小，但是 O3.o 比 O0.o 略大一些，可能的原因是 Linker 無法連結動態函數庫，所以使用靜態編譯而導致的結果
