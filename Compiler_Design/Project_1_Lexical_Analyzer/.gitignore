@@ -1,0 +1,8 @@
+.antlr
+.vscode
+antlr-4.9.3-complete.jar
+408410120.tar.bz2
+mylexer.interp
+mylexer.class
+testLexer.class
+libantlr3c

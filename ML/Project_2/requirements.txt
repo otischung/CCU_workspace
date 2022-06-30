@@ -1,0 +1,4 @@
+gdown
+matplotlib
+numpy
+tqdm

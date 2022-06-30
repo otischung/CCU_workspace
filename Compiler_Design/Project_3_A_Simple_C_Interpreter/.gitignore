@@ -1,0 +1,17 @@
+.antlr
+.idea
+.vscode
+prj3_408410120.tar.bz2
+antlr-4.9.3-complete.jar
+myInterp.tokens
+myInterp.interp
+myInterpBaseListener.java
+myInterpLexer.java
+myInterpLexer.interp
+myInterpLexer.tokens
+myInterpListener.java
+myInterpParser.java
+test1.c
+test2.c
+test3.c
+*.class

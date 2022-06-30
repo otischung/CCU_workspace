@@ -1,0 +1,10 @@
+num_epochs = 10000
+lr = 1e-3
+batch_size = 64
+early_stop = 1000
+num_workers = 0
+momentum = 0.9
+weight_decay = 1e-5
+data_dir = './AI_CUP/dataset/training'
+loss_dir = './Loss_Figure'
+test_dir = './Test_Figure'

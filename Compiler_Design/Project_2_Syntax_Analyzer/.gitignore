@@ -1,0 +1,15 @@
+.antlr
+.idea
+.vscode
+408410120.tar.bz2
+antlr-4.9.3-complete.jar
+myparser.tokens
+myparser.interp
+myparserBaseListener.java
+myparserLexer.java
+myparserLexer.interp
+myparserLexer.tokens
+myparserListener.java
+myparserParser.java
+test.c
+*.class
