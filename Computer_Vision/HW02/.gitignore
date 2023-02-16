@@ -1,0 +1,8 @@
+.vscode
+*.asv
+*.p
+plant-seedlings-classification
+plant-seedlings-classification-masked
+plant-seedlings-classification-masked-resized
+plant-seedlings-classification.zip
+result.csv

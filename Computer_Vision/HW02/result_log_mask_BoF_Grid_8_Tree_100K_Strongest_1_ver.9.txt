@@ -1,0 +1,143 @@
+Creating Bag-Of-Features.
+-------------------------
+* Image category 1: Black-grass
+* Image category 2: Charlock
+* Image category 3: Cleavers
+* Image category 4: Common Chickweed
+* Image category 5: Common wheat
+* Image category 6: Fat Hen
+* Image category 7: Loose Silky-bent
+* Image category 8: Maize
+* Image category 9: Scentless Mayweed
+* Image category 10: Shepherds Purse
+* Image category 11: Small-flowered Cranesbill
+* Image category 12: Sugar beet
+* Selecting feature point locations using the Grid method.
+* Extracting SURF features from the selected feature point locations.
+** The GridStep is [8 8] and the BlockWidth is [32 64 96 128].
+
+* Extracting features from 4276 images...done. Extracted 44487504 features.
+
+* Keeping 100 percent of the strongest features from each category.
+
+* Balancing the number of features across all image categories to improve clustering.
+** Image category 5 has the least number of strongest features: 2070396.
+** Using the strongest 2070396 features from each of the other image categories.
+
+* Creating a 100000 word visual vocabulary.
+* Number of levels: 1
+* Branching factor: 100000
+* Number of clustering steps: 1
+
+* [Step 1/1] Clustering vocabulary level 1.
+* Number of features          : 24844752
+* Number of clusters          : 100000
+* Initializing cluster centers...100.00%.
+* Clustering...completed 0/100 iterations Starting parallel pool (parpool) using the 'Processes' profile ...
+Connected to the parallel poocompleted 45/100 iterations (~439.14 seconds/iteration)...converged in 45 iterations.
+
+* Finished creating Bag-Of-Features
+
+
+Training an image category classifier for 12 categories.
+--------------------------------------------------------
+* Category 1: Black-grass
+* Category 2: Charlock
+* Category 3: Cleavers
+* Category 4: Common Chickweed
+* Category 5: Common wheat
+* Category 6: Fat Hen
+* Category 7: Loose Silky-bent
+* Category 8: Maize
+* Category 9: Scentless Mayweed
+* Category 10: Shepherds Purse
+* Category 11: Small-flowered Cranesbill
+* Category 12: Sugar beet
+
+* Encoding features for 4276 images...done.
+
+* Finished training the category classifier. Use evaluate to test the classifier on a test set.
+
+
+Evaluating image category classifier for 12 categories.
+-------------------------------------------------------
+
+* Category 1: Black-grass
+* Category 2: Charlock
+* Category 3: Cleavers
+* Category 4: Common Chickweed
+* Category 5: Common wheat
+* Category 6: Fat Hen
+* Category 7: Loose Silky-bent
+* Category 8: Maize
+* Category 9: Scentless Mayweed
+* Category 10: Shepherds Purse
+* Category 11: Small-flowered Cranesbill
+* Category 12: Sugar beet
+
+* Evaluating 4276 images...done.
+
+* Finished evaluating all the test sets.
+
+* The confusion matrix for this test set is:
+
+
+                                                                                                                       PREDICTED
+KNOWN                        | Black-grass   Charlock   Cleavers   Common Chickweed   Common wheat   Fat Hen   Loose Silky-bent   Maize   Scentless Mayweed   Shepherds Purse   Small-flowered Cranesbill   Sugar beet   
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Black-grass                  | 0.88          0.00       0.00       0.00               0.03           0.00      0.07               0.00    0.00                0.00              0.02                        0.00         
+Charlock                     | 0.00          0.99       0.00       0.00               0.00           0.00      0.00               0.00    0.00                0.00              0.00                        0.00         
+Cleavers                     | 0.00          0.02       0.91       0.00               0.00           0.00      0.00               0.01    0.00                0.00              0.07                        0.00         
+Common Chickweed             | 0.01          0.01       0.00       0.85               0.00           0.01      0.00               0.03    0.05                0.00              0.03                        0.01         
+Common wheat                 | 0.02          0.00       0.00       0.00               0.94           0.01      0.01               0.02    0.00                0.00              0.01                        0.00         
+Fat Hen                      | 0.05          0.02       0.04       0.01               0.01           0.76      0.01               0.06    0.01                0.00              0.02                        0.04         
+Loose Silky-bent             | 0.17          0.00       0.00       0.00               0.02           0.00      0.76               0.02    0.00                0.00              0.01                        0.01         
+Maize                        | 0.00          0.00       0.00       0.00               0.01           0.00      0.00               0.98    0.02                0.00              0.00                        0.00         
+Scentless Mayweed            | 0.00          0.01       0.01       0.02               0.00           0.00      0.00               0.03    0.94                0.00              0.00                        0.00         
+Shepherds Purse              | 0.00          0.00       0.00       0.01               0.00           0.00      0.00               0.00    0.00                0.96              0.02                        0.00         
+Small-flowered Cranesbill    | 0.00          0.01       0.00       0.00               0.00           0.00      0.00               0.00    0.00                0.00              0.98                        0.00         
+Sugar beet                   | 0.02          0.00       0.01       0.01               0.01           0.01      0.00               0.05    0.01                0.00              0.00                        0.87         
+
+* Average Accuracy is 0.90.
+
+
+Evaluating image category classifier for 12 categories.
+-------------------------------------------------------
+
+* Category 1: Black-grass
+* Category 2: Charlock
+* Category 3: Cleavers
+* Category 4: Common Chickweed
+* Category 5: Common wheat
+* Category 6: Fat Hen
+* Category 7: Loose Silky-bent
+* Category 8: Maize
+* Category 9: Scentless Mayweed
+* Category 10: Shepherds Purse
+* Category 11: Small-flowered Cranesbill
+* Category 12: Sugar beet
+
+* Evaluating 474 images...done.
+
+* Finished evaluating all the test sets.
+
+* The confusion matrix for this test set is:
+
+
+                                                                                                                       PREDICTED
+KNOWN                        | Black-grass   Charlock   Cleavers   Common Chickweed   Common wheat   Fat Hen   Loose Silky-bent   Maize   Scentless Mayweed   Shepherds Purse   Small-flowered Cranesbill   Sugar beet   
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Black-grass                  | 0.73          0.00       0.00       0.00               0.08           0.00      0.12               0.00    0.04                0.00              0.00                        0.04         
+Charlock                     | 0.00          0.92       0.00       0.00               0.00           0.00      0.03               0.00    0.03                0.00              0.03                        0.00         
+Cleavers                     | 0.00          0.03       0.62       0.00               0.00           0.00      0.00               0.07    0.03                0.00              0.24                        0.00         
+Common Chickweed             | 0.00          0.00       0.03       0.66               0.02           0.00      0.00               0.11    0.13                0.02              0.00                        0.03         
+Common wheat                 | 0.14          0.00       0.00       0.00               0.59           0.05      0.14               0.00    0.05                0.00              0.05                        0.00         
+Fat Hen                      | 0.06          0.04       0.04       0.00               0.02           0.55      0.02               0.06    0.00                0.00              0.11                        0.09         
+Loose Silky-bent             | 0.25          0.00       0.00       0.00               0.06           0.00      0.62               0.02    0.03                0.00              0.03                        0.00         
+Maize                        | 0.00          0.05       0.00       0.00               0.00           0.00      0.00               0.95    0.00                0.00              0.00                        0.00         
+Scentless Mayweed            | 0.00          0.02       0.02       0.04               0.02           0.00      0.00               0.02    0.81                0.06              0.02                        0.00         
+Shepherds Purse              | 0.00          0.09       0.00       0.00               0.00           0.00      0.00               0.00    0.13                0.70              0.09                        0.00         
+Small-flowered Cranesbill    | 0.00          0.02       0.02       0.00               0.00           0.00      0.02               0.02    0.00                0.00              0.92                        0.00         
+Sugar beet                   | 0.03          0.00       0.03       0.08               0.00           0.05      0.00               0.05    0.03                0.00              0.00                        0.74         
+
+* Average Accuracy is 0.73.
